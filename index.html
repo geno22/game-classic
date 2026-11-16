@@ -1,0 +1,1889 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เกมดนตรีคลาสสิก · Classical Music Games (Offline)</title>
+<meta name="description" content="เกมทายศัพท์ดนตรี อักษรไขว้ และทายนักประพันธ์ — ไฟล์เดียว เล่นออฟไลน์ได้">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Noto+Serif+Thai:wght@400;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--gold:#d9b87f;--gold-bright:#f0d8a8;--gold-deep:#a9854d}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:#120e0b;color:#f0e5d2;line-height:1.55;
+  font-family:'Sarabun','Noto Serif Thai',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit}
+a{color:inherit}
+.app-shell{
+  position:relative;min-height:100vh;background-color:#120e0b;
+  background-image:
+    radial-gradient(ellipse 90% 55% at 50% -15%, rgba(217,184,127,.16), transparent 65%),
+    radial-gradient(ellipse 70% 45% at 50% 118%, rgba(126,72,52,.14), transparent 70%);
+}
+.wrap{position:relative;max-width:1040px;margin:0 auto;padding:38px 16px 80px}
+.center{text-align:center}
+.muted{color:#a9977f}
+.small{font-size:.85rem}
+.gold-text{color:var(--gold)}
+.right-text{color:#a8c9a4}
+.wrong-text{color:#e7a29c}
+.hidden{display:none!important}
+.mt1{margin-top:.3rem}.mt2{margin-top:.5rem}.mt3{margin-top:.75rem}
+.mt4{margin-top:1rem}.mt5{margin-top:1.25rem}.mt7{margin-top:1.75rem}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.between{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.stack>*+*{margin-top:.5rem}
+.display-title{
+  font-family:'Cormorant Garamond','Noto Serif Thai',Georgia,serif;
+  font-weight:600;line-height:1.15;color:#f5ead6;
+}
+.eyebrow{
+  font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-deep);
+}
+.term{
+  font-family:'Cormorant Garamond','Noto Serif Thai',Georgia,serif;
+  font-style:italic;font-size:1.75rem;line-height:1.2;color:var(--gold-bright);
+}
+.ornate-panel{
+  position:relative;border:1px solid rgba(217,184,127,.18);border-radius:3px;
+  background:linear-gradient(180deg, rgba(217,184,127,.055), rgba(217,184,127,0) 42%), #1a1410;
+  box-shadow:0 50px 90px -60px #000, inset 0 1px 0 rgba(255,245,225,.05);
+}
+.ornate-panel::before{
+  content:"";position:absolute;inset:5px;border:1px solid rgba(217,184,127,.09);
+  border-radius:2px;pointer-events:none;
+}
+.panel-pad{padding:18px}
+@media(min-width:640px){.panel-pad{padding:30px}}
+.rule{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;max-width:340px;margin:18px auto}
+.rule::before,.rule::after{
+  content:"";height:1px;flex:1 1 auto;
+  background:linear-gradient(90deg, rgba(217,184,127,0), rgba(217,184,127,.5), rgba(217,184,127,0));
+}
+.rule span{width:7px;height:7px;flex:none;transform:rotate(45deg);border:1px solid rgba(217,184,127,.75)}
+.tab{
+  display:inline-flex;align-items:center;gap:.5rem;padding:.55rem 1.05rem;
+  border:1px solid rgba(217,184,127,.18);border-radius:2px;background:rgba(255,246,230,.02);
+  color:#e6d8c1;font-size:.9rem;cursor:pointer;transition:all .22s ease;
+}
+.tab:hover{border-color:rgba(217,184,127,.45);background:rgba(217,184,127,.06);color:#f7edda}
+.tab.is-active{
+  background:linear-gradient(180deg,#e8cc9a,#c9a765);border-color:rgba(255,242,214,.55);
+  color:#241a10;font-weight:600;
+}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.45rem;
+  padding:.62rem 1.15rem;border-radius:2px;border:1px solid transparent;
+  font-size:.93rem;line-height:1.2;cursor:pointer;transition:all .2s ease;
+}
+.btn:disabled{opacity:.32;cursor:not-allowed}
+.btn-gold{
+  background:linear-gradient(180deg,#ebd0a0,#cba765);border-color:rgba(255,242,214,.5);
+  color:#231a10;font-weight:600;
+}
+.btn-gold:hover:not(:disabled){filter:brightness(1.05)}
+.btn-ghost{background:rgba(255,246,230,.015);border-color:rgba(217,184,127,.26);color:#e9dcc7}
+.btn-ghost:hover:not(:disabled){border-color:rgba(217,184,127,.6);background:rgba(217,184,127,.07)}
+.btn-sm{padding:.34rem .75rem;font-size:.79rem}
+.tag{
+  display:inline-flex;align-items:center;gap:.35rem;padding:.18rem .7rem;border-radius:999px;
+  border:1px solid;font-size:.76rem;font-weight:600;letter-spacing:.06em;
+}
+.tag-easy{color:#a8c9a4;border-color:rgba(94,143,98,.5);background:rgba(94,143,98,.14)}
+.tag-med{color:#e4c07a;border-color:rgba(198,154,69,.5);background:rgba(198,154,69,.14)}
+.tag-hard{color:#e7a29c;border-color:rgba(161,84,79,.55);background:rgba(161,84,79,.16)}
+.grid3{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:680px){.grid3{grid-template-columns:repeat(3,1fr)}}
+.level-card{
+  position:relative;display:flex;flex-direction:column;gap:.35rem;padding:1.35rem;
+  text-align:left;border:1px solid rgba(217,184,127,.16);border-radius:3px;
+  background:linear-gradient(180deg, rgba(255,244,224,.035), rgba(255,244,224,0) 55%), #201913;
+  color:#eee2cd;cursor:pointer;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;
+}
+.level-card:hover{transform:translateY(-4px);border-color:rgba(217,184,127,.6);box-shadow:0 30px 50px -35px #000}
+.level-roman{font-family:'Cormorant Garamond',Georgia,serif;font-size:.76rem;letter-spacing:.34em;color:rgba(217,184,127,.55)}
+.level-icon{font-size:1.55rem;line-height:1}
+.level-name{font-family:'Cormorant Garamond','Noto Serif Thai',Georgia,serif;font-size:1.42rem;font-weight:600;color:#f5ead6}
+.level-li{display:block;font-size:.85rem;line-height:1.7;color:#a9977f}
+.level-best{margin-top:.6rem;font-size:.79rem;color:var(--gold)}
+.bar{height:4px;width:100%;border-radius:999px;background:rgba(255,244,224,.08);overflow:hidden}
+.bar>span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#8a6534,var(--gold-bright));transition:width .4s ease}
+.timer{font-family:'Cormorant Garamond',Georgia,serif;font-size:1.08rem;font-weight:600;color:#e8dbc4}
+.timer.is-low{color:#e08a83;animation:pulseSoft .6s ease-in-out infinite alternate}
+@keyframes pulseSoft{to{opacity:.45}}
+.note{
+  margin-top:.6rem;padding:.6rem .85rem;border-left:2px solid var(--gold);
+  background:rgba(217,184,127,.07);font-size:.9rem;line-height:1.65;color:#e3d6c1;
+}
+.opt{
+  display:flex;align-items:center;gap:.7rem;padding:.85rem .95rem;text-align:left;width:100%;
+  border:1px solid rgba(217,184,127,.15);border-radius:2px;background:#221b15;color:#eadfcd;
+  font-size:.97rem;line-height:1.45;cursor:pointer;transition:all .18s ease;
+}
+.opt:hover:not(:disabled){border-color:rgba(217,184,127,.5);background:#2a2119}
+.opt:disabled{cursor:default}
+.opt-letter{
+  display:inline-flex;align-items:center;justify-content:center;flex:none;width:1.55rem;height:1.55rem;
+  border:1px solid rgba(217,184,127,.3);border-radius:50%;
+  font-family:'Cormorant Garamond',Georgia,serif;font-size:.92rem;color:rgba(217,184,127,.85);
+}
+.opt.is-right{background:#1d3123;border-color:#5e8f62;color:#d6e8d4}
+.opt.is-wrong{background:#34201d;border-color:#a1544f;color:#f2d3cf}
+.opt.is-gone{opacity:.18;text-decoration:line-through}
+.aud{
+  margin-top:.6rem;padding:.7rem .9rem;border:1px solid rgba(217,184,127,.12);
+  background:rgba(255,244,224,.03);
+}
+.aud-row{display:flex;align-items:center;gap:.6rem;margin:.3rem 0;font-size:.85rem}
+.aud-track{flex:1;height:10px;background:rgba(0,0,0,.4);overflow:hidden}
+.aud-fill{height:100%;background:linear-gradient(90deg,#8b6b34,var(--gold-bright))}
+.cw-wrap{display:flex;gap:1.75rem;flex-wrap:wrap;align-items:flex-start}
+.cw-grid{display:grid;gap:2px;margin:0 auto;justify-content:center}
+.cw-empty{width:100%;height:100%}
+.cw-cell{
+  position:relative;border-radius:2px;background:#f6efdf;
+  box-shadow:inset 0 0 0 1px rgba(36,26,16,.08);
+}
+.cw-cell input{
+  width:100%;height:100%;border:0;background:transparent;border-radius:2px;padding:0;
+  text-align:center;text-transform:uppercase;
+  font-family:'Cormorant Garamond',Georgia,serif;font-weight:700;color:#241a10;
+  outline:none;caret-color:transparent;
+}
+.cw-cell .num{
+  position:absolute;top:1px;left:2px;line-height:1;font-weight:700;color:#8a7350;pointer-events:none;
+}
+.cw-cell.is-given{background:#e9d9b6}
+.cw-cell.is-given input{color:#8a6430}
+.cw-cell.is-hl{background:#fbeec7}
+.cw-cell.is-cur{background:#f1d79a}
+.cw-cell.is-ok{background:#cfe4cd}
+.cw-cell.is-bad{background:#f0c9c5}
+.cw-cell.is-rev input{color:#7a4fd6}
+.clue-item{
+  padding:.35rem .55rem;border-radius:2px;cursor:pointer;font-size:.88rem;line-height:1.55;
+  color:#d9cbb6;transition:background .18s ease;
+}
+.clue-item:hover{background:rgba(217,184,127,.07)}
+.clue-item.is-act{background:rgba(217,184,127,.15);color:#f7ecd8}
+.clue-item.is-done{text-decoration:line-through;opacity:.45}
+.clue-len{font-size:.78em;color:#8d7d68}
+.portrait{
+  position:relative;width:232px;max-width:100%;aspect-ratio:3/4;
+  border:1px solid rgba(217,184,127,.45);background:#221b15;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+.portrait::after{content:"";position:absolute;inset:4px;border:1px solid rgba(217,184,127,.18);pointer-events:none}
+.portrait img{width:100%;height:100%;object-fit:cover;object-position:top;transition:filter .7s ease}
+.portrait img.is-blur{filter:blur(14px) grayscale(1)}
+.slots{display:flex;flex-wrap:wrap;align-items:center;gap:6px;justify-content:center}
+.slot{
+  display:inline-flex;align-items:center;justify-content:center;width:44px;height:54px;border-radius:2px;
+  border:1px solid rgba(217,184,127,.28);background:#171210;color:#f0e4cf;
+  font-family:'Cormorant Garamond',Georgia,serif;font-size:1.5rem;font-weight:700;
+  text-transform:uppercase;padding:0;caret-color:transparent;text-align:center;
+  transition:background .2s ease,border-color .2s ease,color .2s ease;
+}
+.slot:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,184,127,.16)}
+.slot.is-given{background:rgba(217,184,127,.14);border-color:rgba(217,184,127,.45);color:var(--gold-bright)}
+.slot.is-hit{background:#1d3123;border-color:#5e8f62;color:#d6e8d4}
+.slot.is-near{background:#33280f;border-color:#c69a45;color:#f0d8a8}
+.slot.is-miss{background:#34201d;border-color:#a1544f;color:#f2d3cf}
+.slot.is-ans{background:#241d16;border-color:rgba(255,244,224,.25);color:#c9bba6}
+.dash{align-self:center;color:#8d7d68;font-size:1.35rem}
+.field{
+  min-width:0;flex:1;border:1px solid rgba(217,184,127,.28);background:#171210;
+  padding:.5rem .7rem;font-size:.88rem;color:#f0e4cf;outline:none;border-radius:2px;
+}
+.field:focus{border-color:#d9b87f}
+.fade-up{animation:fadeUp .42s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.shake{animation:shakeIt .36s ease}
+@keyframes shakeIt{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media(max-width:640px){.slot{width:32px;height:42px;font-size:1.15rem}}
+</style>
+<script>if (window.self !== window.top) window.parent.postMessage({ type: 'SANDBOX_DOCUMENT_START' }, '*');</script><script>
+    (function() {
+        var buffer = window.__base44_preview_native_failures;
+        if (!buffer || buffer.version !== 1 || !Array.isArray(buffer.entries)) {
+            buffer = { version: 1, entries: [], listenersInstalled: false };
+            window.__base44_preview_native_failures = buffer;
+        }
+        if (buffer.listenersInstalled) return;
+        function value(object, key) {
+            return object && typeof object[key] === 'string' ? object[key] : '';
+        }
+        function append(message) {
+            if (!message) return;
+            var normalizedMessage = String(message).slice(0, 5000);
+            for (var index = buffer.entries.length - 1; index >= 0; index--) {
+                var existing = buffer.entries[index];
+                if (existing && existing.level === 'error' && existing.message === normalizedMessage) {
+                    buffer.entries.splice(index, 1);
+                }
+            }
+            buffer.entries.push({
+                level: 'error',
+                message: normalizedMessage,
+                timestamp: Date.now()
+            });
+            if (buffer.entries.length > 100) {
+                buffer.entries.splice(0, buffer.entries.length - 100);
+            }
+        }
+        buffer.append = append;
+        function handleError(event) {
+            var target = event && event.target;
+            var tagName = value(target, 'tagName').toLowerCase() || 'window';
+            var isModule = tagName === 'script' && value(target, 'type').toLowerCase() === 'module';
+            var resourceType = isModule ? 'module' : tagName;
+            var url = value(target, 'src') || value(target, 'href') || value(event, 'filename');
+            var detail = value(event, 'message') || value(event && event.error, 'message');
+            var prefix = tagName === 'window' ? 'Native browser error' : 'Failed to load ' + resourceType;
+            append(prefix + (url ? ' ' + url : '') + (detail ? ': ' + detail : ''));
+        }
+        function rejectionReason(reason) {
+            if (typeof reason === 'string') return reason;
+            var message = value(reason, 'message');
+            if (message) return message;
+            try { return JSON.stringify(reason) || String(reason); }
+            catch (e) { return String(reason); }
+        }
+        function handleRejection(event) {
+            append('Unhandled promise rejection: ' + rejectionReason(event && event.reason));
+        }
+        function handleCspViolation(event) {
+            var blockedUri = value(event, 'blockedURI') || 'resource';
+            var directive = value(event, 'violatedDirective');
+            append('Content Security Policy blocked ' + blockedUri + (directive ? ' (' + directive + ')' : ''));
+        }
+        function overlayText(root, selector) {
+            var element = root && root.querySelector(selector);
+            return value(element, 'textContent').trim();
+        }
+        function captureViteOverlay(overlay) {
+            var root = overlay && overlay.shadowRoot;
+            var message = overlayText(root, '.message-body');
+            if (!message) return;
+            var plugin = overlayText(root, '.plugin');
+            var details = ['Vite build error: ' + (plugin ? plugin + ' ' : '') + message];
+            var file = overlayText(root, '.file');
+            var frame = overlayText(root, '.frame');
+            var stack = overlayText(root, '.stack');
+            if (file) details.push('File: ' + file);
+            if (frame) details.push(frame);
+            if (stack) details.push(stack);
+            append(details.join(String.fromCharCode(10)));
+        }
+        function captureViteOverlays(node) {
+            if (!node || node.nodeType !== 1) return;
+            if (node.matches && node.matches('vite-error-overlay')) captureViteOverlay(node);
+            if (!node.querySelectorAll) return;
+            var overlays = node.querySelectorAll('vite-error-overlay');
+            for (var index = 0; index < overlays.length; index++) captureViteOverlay(overlays[index]);
+        }
+        window.addEventListener('error', handleError, true);
+        window.addEventListener('unhandledrejection', handleRejection);
+        window.addEventListener('securitypolicyviolation', handleCspViolation);
+        if (typeof MutationObserver !== 'undefined' && document.documentElement) {
+            captureViteOverlays(document.documentElement);
+            new MutationObserver(function(records) {
+                for (var recordIndex = 0; recordIndex < records.length; recordIndex++) {
+                    var nodes = records[recordIndex].addedNodes;
+                    for (var nodeIndex = 0; nodeIndex < nodes.length; nodeIndex++) {
+                        captureViteOverlays(nodes[nodeIndex]);
+                    }
+                }
+            }).observe(document.documentElement, { childList: true, subtree: true });
+        }
+        buffer.listenersInstalled = true;
+    })();
+    </script><script data-preview-data-env-pin="true">
+    (function() {
+        var KEY = 'base44_data_env';
+        var APP_API_PATH = "/api/apps/6afaab0e765686513e8835f0/";
+        var STORAGE_KEY = KEY + ':' + APP_API_PATH;
+        var API_ORIGINS = ["https://app.base44.com", "https://base44.app"].map(function(u) { return new URL(u).origin; });
+        var REQUEST_INIT_KEYS = [
+            'method', 'headers', 'credentials', 'mode', 'cache', 'redirect',
+            'referrer', 'referrerPolicy', 'integrity', 'keepalive', 'signal', 'priority',
+        ];
+        var env = new URLSearchParams(window.location.search).get(KEY);
+        try {
+            if (env === 'dev' || env === 'prod') sessionStorage.setItem(STORAGE_KEY, env);
+            else env = sessionStorage.getItem(STORAGE_KEY);
+        } catch (e) {}
+        if (env !== 'dev' && env !== 'prod') return;
+        function pin(url) {
+            try {
+                var u = new URL(url, window.location.href);
+                var sameOrigin = u.origin === window.location.origin;
+                if (!sameOrigin && API_ORIGINS.indexOf(u.origin) === -1) return url;
+                // The app's own server routes and TanStack server functions build
+                // their SDK client from this request, so they need the selection too.
+                var appServerPath = sameOrigin && (
+                    u.pathname.startsWith('/api/') || u.pathname.startsWith('/_serverFn/')
+                );
+                if (!appServerPath && !u.pathname.startsWith(APP_API_PATH)) return url;
+                // Privileged function/agent routes trust this app's Preview host,
+                // not a dev parameter sent to the generic SDK API origin.
+                if (u.origin !== window.location.origin && (
+                    u.pathname.startsWith(APP_API_PATH + 'functions/') ||
+                    u.pathname.startsWith(APP_API_PATH + 'agents/')
+                )) {
+                    u = new URL(u.pathname + u.search + u.hash, window.location.origin);
+                }
+                u.searchParams.set(KEY, env);
+                return u.toString();
+            } catch (e) { return url; }
+        }
+        var origFetch = window.fetch;
+        window.fetch = function(input, init) {
+            if (typeof input === 'string' || input instanceof URL) {
+                return origFetch.call(this, pin(String(input)), init);
+            }
+            if (!input || !input.url) return origFetch.call(this, input, init);
+            var pinned = pin(input.url);
+            if (pinned === input.url) return origFetch.call(this, input, init);
+            try {
+                input = new Request(input, init);
+                if (!input.keepalive || !input.body) {
+                    return origFetch.call(this, new Request(pinned, input));
+                }
+                // RequestInit exposes an existing body as a stream, which Fetch
+                // forbids with keepalive. Buffer only that case, after init overrides.
+                var self = this;
+                return input.blob().then(function(body) {
+                    var rebuilt = { body: body };
+                    REQUEST_INIT_KEYS.forEach(function(key) {
+                        if (input[key] !== undefined) rebuilt[key] = input[key];
+                    });
+                    return origFetch.call(self, new Request(pinned, rebuilt));
+                });
+            } catch (error) { return Promise.reject(error); }
+        };
+        var origOpen = XMLHttpRequest.prototype.open;
+        XMLHttpRequest.prototype.open = function(method, url) {
+            arguments[1] = pin(String(url));
+            return origOpen.apply(this, arguments);
+        };
+    })();
+    </script><script defer data-preview-inject="true" data-parent-origins="https://app.base44.com https://superagent.base44.com" data-app-id="6afaab0e765686513e8835f0" data-preview-type="sandbox" data-rum-app-id="db50c921-10c3-4f12-bccb-950fa174b708" data-rum-client-token="pubfe8a4f2972b412b4556fd67e77f82cb4" data-dd-site="datadoghq.com" src="https://app.base44.com/builder-bridge.js?t=1794813387"></script><script>
+    (function() {
+        var IGNORE = { SCRIPT: 1, STYLE: 1, LINK: 1, META: 1, NOSCRIPT: 1, TEMPLATE: 1 };
+        const fire = () => window.parent.postMessage({ type: 'IFRAME_CONTENT_READY' }, '*');
+        function check() {
+            var body = document.body;
+            if (!body) return false;
+            for (var idx = 0; idx < body.children.length; idx++) {
+                if (!IGNORE[body.children[idx].tagName]) return true;
+            }
+            return false;
+        }
+        function start() {
+            if (check()) { fire(); return; }
+            var observer = new MutationObserver(function() {
+                if (check()) { fire(); observer.disconnect(); }
+            });
+            observer.observe(document.documentElement, { childList: true, subtree: true });
+        }
+        if (document.body) { start(); }
+        else { document.addEventListener('DOMContentLoaded', start, { once: true }); }
+    })();
+    </script><script>
+    (function() {
+        if (window.self === window.top) return;
+        var APP_ID = "6afaab0e765686513e8835f0";
+        var PREVIEW_TYPE = "sandbox";
+        var on404 = false;
+        var booted = false;
+        function detect() { return !!document.querySelector('[data-source-location^="PageNotFound:"]'); }
+        function payload() { return { app_id: APP_ID, preview_type: PREVIEW_TYPE, url_path: window.location.pathname }; }
+        function tick() {
+            var now = detect();
+            if (now && !on404) {
+                on404 = true;
+                window.parent.postMessage({ type: 'PREVIEW_PAGE_NOT_FOUND', payload: payload() }, '*');
+            } else if (!now && (on404 || !booted)) {
+                // On first tick of a fresh document, emit a cleared signal even when
+                // not currently on a 404 — the parent may have latched is404=true from
+                // a previous document at the same URL (e.g. after an iframe reload).
+                on404 = false;
+                window.parent.postMessage({ type: 'PREVIEW_PAGE_NOT_FOUND_CLEARED', payload: payload() }, '*');
+            }
+            booted = true;
+        }
+        function start() {
+            tick();
+            new MutationObserver(tick).observe(document.body, { childList: true, subtree: true });
+        }
+        if (document.body) { start(); }
+        else { document.addEventListener('DOMContentLoaded', start, { once: true }); }
+    })();
+    </script><script>
+    (function() {
+        if (window.self === window.top) return;
+        function fire() { window.parent.postMessage({ type: 'REACT_ROOT_HAS_CHILDREN' }, '*'); }
+        function findRoot() {
+            return document.getElementById('root')
+                || document.getElementById('app')
+                || document.querySelector('[data-react-root]');
+        }
+        // One-shot: wait for DOMContentLoaded (static HTML parsed by then, so the
+        // Base44 convention <div id="root"> is either present or not coming),
+        // observe the root's childList until the first element child appears,
+        // then fire and disconnect. No tree-wide subtree observer.
+        function start() {
+            var root = findRoot();
+            if (!root) return;
+            if (root.childElementCount > 0) { fire(); return; }
+            var obs = new MutationObserver(function() {
+                if (root.childElementCount > 0) { fire(); obs.disconnect(); }
+            });
+            obs.observe(root, { childList: true });
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', start, { once: true });
+        } else { start(); }
+    })();
+    </script><script>
+    (function() {
+        if (window.self === window.top) return;
+        function postUnsupported(reason) {
+            window.parent.postMessage({
+                type: 'IFRAME_FIRST_CONTENTFUL_PAINT_UNSUPPORTED',
+                payload: { reason: reason, userAgent: navigator.userAgent }
+            }, '*');
+        }
+        if (typeof PerformanceObserver === 'undefined') {
+            postUnsupported('no_performance_observer');
+            return;
+        }
+        try {
+            var obs = new PerformanceObserver(function(list) {
+                var entries = list.getEntries();
+                for (var i = 0; i < entries.length; i++) {
+                    if (entries[i].name === 'first-contentful-paint') {
+                        obs.disconnect();
+                        window.parent.postMessage({ type: 'IFRAME_FIRST_CONTENTFUL_PAINT' }, '*');
+                        return;
+                    }
+                }
+            });
+            obs.observe({ type: 'paint', buffered: true });
+        } catch (e) {
+            postUnsupported('observe_threw:' + (e && e.name ? e.name : 'Error'));
+        }
+    })();
+    </script><script>
+    (function() {
+        if (window.self === window.top) return;
+        var APP_ID = "6afaab0e765686513e8835f0";
+        var PREVIEW_TYPE = "sandbox";
+        var DEPS_PATH = '/node_modules/.vite/deps/';
+        var fired = false;
+        function isViteDep(url) {
+            return typeof url === 'string' && url.indexOf(DEPS_PATH) !== -1;
+        }
+        var confirmed = {};
+        function looksFailed(entry) {
+            // HTTP failure status (Chrome 109+).
+            if (entry.responseStatus && entry.responseStatus >= 400) return true;
+            // Aborted / blocked / network-error: request ran, nothing decoded.
+            // decodedBodySize === 0 distinguishes from cache hits (Safari has no
+            // deliveryType, so we can't rely on it to exclude cached responses).
+            return entry.transferSize === 0
+                && entry.decodedBodySize === 0
+                && entry.duration > 0
+                && entry.responseEnd > 0;
+        }
+        // WebKit has no responseStatus and zeroes every size on a cache hit, so the
+        // size heuristic alone flags every cached dep. Re-ask the server instead; a
+        // rejected HEAD proves nothing, WebKit aborts it when the frame navigates away.
+        function confirmThenReport(entry) {
+            if (confirmed[entry.name]) return;
+            confirmed[entry.name] = true;
+            fetch(entry.name, { method: 'HEAD', cache: 'no-store' }).then(function(res) {
+                var type = res.headers.get('content-type') || '';
+                if (res.status >= 400 || type.indexOf('text/html') !== -1) report(entry, res.status);
+            }, function() {});
+        }
+        function report(entry, confirmedStatus) {
+            if (fired) return;
+            fired = true;
+            var nativeBuffer = window.__base44_preview_native_failures;
+            if (nativeBuffer && typeof nativeBuffer.append === 'function') {
+                nativeBuffer.append('Failed to load module ' + entry.name);
+            }
+            window.parent.postMessage({
+                type: 'SANDBOX_VITE_DEPS_404',
+                payload: {
+                    app_id: APP_ID,
+                    preview_type: PREVIEW_TYPE,
+                    url: entry.name,
+                    initiator_type: entry.initiatorType,
+                    response_status: entry.responseStatus || confirmedStatus
+                }
+            }, '*');
+        }
+        new PerformanceObserver(function(list) {
+            if (fired) return;
+            var entries = list.getEntries();
+            for (var i = 0; i < entries.length; i++) {
+                if (isViteDep(entries[i].name) && looksFailed(entries[i])) {
+                    if ('responseStatus' in entries[i]) {
+                        report(entries[i]);
+                        return;
+                    }
+                    confirmThenReport(entries[i]);
+                }
+            }
+        }).observe({ type: 'resource', buffered: true });
+    })();
+    </script><script>
+    (function() {
+        if (typeof PerformanceObserver === 'undefined') return;
+        var reported = {};
+        // Only the app's own module trees may put an error over the preview. A page
+        // can load an optional classic script (analytics, a widget) that fails while
+        // the app renders perfectly well; that must not read as broken app code.
+        // Recording is deliberately wider than reporting — the console buffer keeps
+        // every failed module for diagnostics.
+        function isAppModule(path) {
+            return path.indexOf('/src/') === 0 || path.indexOf('/base44/') === 0;
+        }
+        function modulePath(url) {
+            try {
+                var path = new URL(url, window.location.href).pathname;
+                // The bridge probes this standard SDK path opportunistically;
+                // legacy/custom apps are allowed not to provide it.
+                if (path === '/src/api/base44Client.js') return '';
+                if (path.indexOf('/node_modules/.vite/deps/') !== -1) return '';
+                return /[.](?:[cm]?[jt]sx?)$/i.test(path) ? path : '';
+            } catch (e) {
+                return '';
+            }
+        }
+        new PerformanceObserver(function(list) {
+            var entries = list.getEntries();
+            for (var index = 0; index < entries.length; index++) {
+                var entry = entries[index];
+                if (entry.initiatorType !== 'script') continue;
+                var status = entry.responseStatus;
+                if (!status) continue;
+                var path = modulePath(entry.name);
+                if (!path) continue;
+                if (status < 400) {
+                    // Recovered (an HMR fix re-requests it). Forget it, or breaking the
+                    // same path again later this document would be silently suppressed.
+                    delete reported[path];
+                    continue;
+                }
+                var message = status === 404
+                    ? 'Module not found: ' + path
+                    : 'Module failed to load (' + status + '): ' + path;
+                var buffer = window.__base44_preview_native_failures;
+                if (buffer && typeof buffer.append === 'function') buffer.append(message);
+                if (!isAppModule(path) || reported[path] || window.self === window.top) continue;
+                reported[path] = true;
+                window.parent.postMessage({
+                    type: 'SANDBOX_MODULE_LOAD_FAILED',
+                    payload: { path: path, status: status, message: message }
+                }, '*');
+            }
+        }).observe({ type: 'resource', buffered: true });
+    })();
+    </script><script>
+    (function() {
+        if (window.self === window.top) return;
+        if (typeof performance === 'undefined' || typeof performance.getEntriesByType !== 'function') return;
+        var DEPS_PATH = '/node_modules/.vite/deps/';
+        var QUIESCENCE_MS = 1500;
+        var POLL_MS = 500;
+        var fired = false;
+        var intervalId = setInterval(function() {
+            if (fired) return;
+            var entries = performance.getEntriesByType('resource');
+            var lastDepEnd = 0;
+            for (var i = 0; i < entries.length; i++) {
+                if (entries[i].name.indexOf(DEPS_PATH) === -1) continue;
+                if (entries[i].responseEnd > lastDepEnd) lastDepEnd = entries[i].responseEnd;
+            }
+            if (lastDepEnd === 0) return;
+            if (performance.now() - lastDepEnd >= QUIESCENCE_MS) {
+                fired = true;
+                clearInterval(intervalId);
+                window.parent.postMessage({ type: 'IFRAME_VITE_DEPS_SETTLED' }, '*');
+            }
+        }, POLL_MS);
+    })();
+    </script><script>
+        window.__base44_sdk_attach = import("/src/api/base44Client.js").then(({ base44 }) => {
+            if (base44) {
+                Object.defineProperty(window, "base44_sdk", {
+                    value: base44,
+                    writable: false,
+                    configurable: true
+                });
+            }
+        }).catch((e) => {
+            // Some legacy/custom apps may not have the standard client module.
+            // Leave window.base44_sdk undefined; PreviewLens can fall back to UI/network checks.
+            window.parent.postMessage({ type: "PREVIEW_LENS_SDK_ATTACH_FAILED", error: String(e) }, "*");
+        });
+        </script><script type="module">
+        try {
+            const { createHotContext } = await import("/@vite/client");
+            const hot = createHotContext("/__builder-bridge-hmr");
+            const previewFEVersion = Number(new URLSearchParams(window.location.search).get("previewFE_version")) || 0;
+        
+            let wsOpenedAt = 0;
+            hot.on("vite:ws:connect", () => {
+                wsOpenedAt = Date.now();
+                window.parent.postMessage({ type: "SANDBOX_WS_CONNECT" }, "*");
+            });
+            hot.on("vite:ws:disconnect", () => {
+                let sw = null;
+                try { sw = navigator.serviceWorker; } catch (e) {}  // SecurityError where storage is denied
+                const staleClient = Date.now() - wsOpenedAt < 1000 && !!(sw && sw.controller);
+                window.parent.postMessage({ type: "SANDBOX_WS_DISCONNECT", payload: { stale_client: staleClient } }, "*");
+                if (!staleClient) return;
+                // Vite awaits this before it reloads, so the reload fetches fresh modules.
+                return Promise.race([
+                    Promise.all([
+                        sw.getRegistrations().then((regs) => Promise.all(regs.map((reg) => reg.unregister()))),
+                        caches.keys().then((keys) => Promise.all(keys.map((key) => caches.delete(key)))),
+                    ]),
+                    new Promise((resolve) => setTimeout(resolve, 2000)),
+                ]).catch(() => {});
+            });
+    
+            hot.on("vite:error", (payload) => {
+                const err = payload && payload.err && typeof payload.err === "object" ? payload.err : {};
+                const message = typeof err.message === "string" ? err.message : "Unknown build error";
+                const plugin = typeof err.plugin === "string" ? `[plugin:${err.plugin}] ` : "";
+                const details = [`Vite build error: ${plugin}${message}`];
+                const loc = err.loc && typeof err.loc === "object" ? err.loc : null;
+                let file = loc && typeof loc.file === "string"
+                    ? loc.file
+                    : (typeof err.id === "string" ? err.id : "");
+                if (file) {
+                    file = file.split("?")[0];
+                    if (loc && Number.isFinite(loc.line) && Number.isFinite(loc.column)) {
+                        file += `:${loc.line}:${loc.column}`;
+                    }
+                    details.push(`File: ${file}`);
+                }
+                if (typeof err.frame === "string" && err.frame.trim()) details.push(err.frame.trim());
+                if (typeof err.stack === "string" && err.stack.trim()) details.push(err.stack.trim());
+
+                const nativeBuffer = window.__base44_preview_native_failures;
+                if (!nativeBuffer || typeof nativeBuffer.append !== "function") return;
+                nativeBuffer.append(details.join(String.fromCharCode(10)));
+            });
+    
+            let hotUpdateStartedAt = 0;
+            hot.on("vite:beforeUpdate", () => { hotUpdateStartedAt = performance.now(); });
+            hot.on("vite:afterUpdate", () => {
+                const startedAt = hotUpdateStartedAt;
+                requestAnimationFrame(() => {
+                    window.parent.postMessage({ type: "SANDBOX_HOT_UPDATE_PAINTED", duration_ms: performance.now() - startedAt }, "*");
+                });
+            });
+    
+            // The pending promise holds Vite's pageReload (it awaits listeners) so the parent swaps a fresh iframe; an editor that doesn't announce previewFE_version falls back to today's in-place reload.
+            hot.on("vite:beforeFullReload", () => {
+                window.parent.postMessage({ type: "sandbox:beforeFullReload" }, "*");
+                if (previewFEVersion > 0) return new Promise(() => {});
+            });
+        } catch (e) {
+            window.parent.postMessage({ type: "SANDBOX_WS_ATTACH_FAILED", error: String(e) }, "*");
+        }
+        </script><script>
+        (function() {
+            var INTERVAL_MS = 30 * 60 * 1000;
+            var last = Date.now();
+            function renew() {
+                last = Date.now();
+                fetch("/base44-preview-session", {
+                    credentials: 'same-origin', cache: 'no-store', headers: {"x-base44-preview-keepalive": "1"}
+                }).then(function(r) {
+                    if ((r.status === 401 || r.status === 403) && window.self !== window.top) window.parent.postMessage({ type: 'preview:requestRefresh' }, '*');
+                }).catch(function() {});
+            }
+            setInterval(renew, INTERVAL_MS);
+            document.addEventListener('visibilitychange', function() {
+                if (document.visibilityState === 'visible' && Date.now() - last >= INTERVAL_MS) renew();
+            });
+        })();
+        </script><script>
+    (function() {
+        if (window.self === window.top) return;
+        var lastUrl = window.location.href;
+        function notify() {
+            var url = window.location.href;
+            if (url === lastUrl) return;
+            lastUrl = url;
+            window.parent.postMessage({ type: 'APP_CHANGED_URL', url: url }, '*');
+        }
+        var origPush = history.pushState.bind(history);
+        history.pushState = function() { origPush.apply(history, arguments); notify(); };
+        var origReplace = history.replaceState.bind(history);
+        history.replaceState = function() { origReplace.apply(history, arguments); notify(); };
+        window.addEventListener('popstate', notify);
+        window.parent.postMessage({ type: 'APP_CHANGED_URL', url: window.location.href }, '*');
+    })();
+    </script></head>
+<body>
+<div class="app-shell">
+  <div class="wrap">
+    <header class="center">
+      <p class="eyebrow">Accademia di Musica</p>
+      <h1 class="display-title mt3" style="font-size:2.4rem">เกมดนตรีคลาสสิก</h1>
+      <p class="small muted mt2">เรียนรู้ความรู้รอบตัวด้านดนตรีคลาสสิก ผ่านเกม 3 รูปแบบ</p>
+      <div class="rule"><span></span></div>
+    </header>
+    <nav id="tabs" class="row" style="justify-content:center"></nav>
+    <main class="mt7">
+      <section id="view-quiz" class="view"></section>
+      <section id="view-crossword" class="view hidden"></section>
+      <section id="view-composer" class="view hidden"></section>
+    </main>
+    <footer class="center mt7">
+      <div class="rule"><span></span></div>
+      <p class="small muted" style="letter-spacing:.24em;font-size:11px">MUSICA CLASSICA · OP. III</p>
+    </footer>
+  </div>
+</div>
+<script>
+var TERMS = [{"w":"ALLEGRO","d":"Allegro","m":"เร็ว สดใส มีชีวิตชีวา","l":1,"c":"tempo"},{"w":"ADAGIO","d":"Adagio","m":"ช้า ๆ อย่างผ่อนคลาย สบาย ๆ","l":1,"c":"tempo"},{"w":"ANDANTE","d":"Andante","m":"ปานกลางค่อนข้างช้า เหมือนจังหวะการเดิน","l":1,"c":"tempo"},{"w":"PRESTO","d":"Presto","m":"เร็วมาก","l":1,"c":"tempo"},{"w":"LARGO","d":"Largo","m":"ช้ามาก กว้างและสง่างาม","l":1,"c":"tempo"},{"w":"LENTO","d":"Lento","m":"ช้า (ช้ากว่า Adagio แต่ไม่ช้าเท่า Largo)","l":1,"c":"tempo"},{"w":"FORTE","d":"Forte (f)","m":"ดัง","l":1,"c":"dyn"},{"w":"PIANO","d":"Piano (p)","m":"เบา","l":1,"c":"dyn"},{"w":"CRESCENDO","d":"Crescendo","m":"ค่อย ๆ ดังขึ้น","l":1,"c":"dyn"},{"w":"DIMINUENDO","d":"Diminuendo","m":"ค่อย ๆ เบาลง","l":1,"c":"dyn"},{"w":"LEGATO","d":"Legato","m":"เล่นเชื่อมโน้ตแต่ละตัวให้ต่อเนื่องกลมกลืน","l":1,"c":"art"},{"w":"STACCATO","d":"Staccato","m":"เล่นโน้ตสั้น ๆ ให้ขาดจากกัน","l":1,"c":"art"},{"w":"FERMATA","d":"Fermata","m":"หยุดค้างเสียงไว้นานกว่าค่าโน้ตปกติ","l":1,"c":"art"},{"w":"TEMPO","d":"Tempo","m":"ความเร็วของจังหวะเพลง","l":1,"c":"theory"},{"w":"CHORD","d":"Chord","m":"โน้ตตั้งแต่ 3 ตัวขึ้นไปที่เล่นพร้อมกัน","l":1,"c":"theory"},{"w":"OCTAVE","d":"Octave","m":"ระยะห่างระหว่างโน้ตชื่อเดียวกัน 8 ขั้น","l":1,"c":"theory"},{"w":"SCALE","d":"Scale","m":"บันไดเสียง","l":1,"c":"theory"},{"w":"MELODY","d":"Melody","m":"ทำนองเพลง","l":1,"c":"theory"},{"w":"HARMONY","d":"Harmony","m":"เสียงประสาน","l":1,"c":"theory"},{"w":"RHYTHM","d":"Rhythm","m":"รูปแบบเสียงสั้น-ยาวที่ประกอบเป็นจังหวะ","l":1,"c":"theory"},{"w":"CODA","d":"Coda","m":"ท่อนจบของบทเพลง","l":1,"c":"form"},{"w":"OPERA","d":"Opera","m":"ละครที่ดำเนินเรื่องด้วยการขับร้องประกอบวงออร์เคสตรา","l":1,"c":"form"},{"w":"SYMPHONY","d":"Symphony","m":"บทเพลงขนาดใหญ่สำหรับวงออร์เคสตรา มักมี 4 ท่อน","l":1,"c":"form"},{"w":"CONCERTO","d":"Concerto","m":"บทเพลงที่เครื่องดนตรีเดี่ยวบรรเลงร่วมกับวงออร์เคสตรา","l":1,"c":"form"},{"w":"SONATA","d":"Sonata","m":"บทเพลงหลายท่อนสำหรับเครื่องดนตรีเดี่ยวหรือคู่กับเปียโน","l":1,"c":"form"},{"w":"MODERATO","d":"Moderato","m":"ความเร็วปานกลาง (เร็วกว่า Andante)","l":2,"c":"tempo"},{"w":"VIVACE","d":"Vivace","m":"เร็วและคึกคัก","l":2,"c":"tempo"},{"w":"ALLEGRETTO","d":"Allegretto","m":"ค่อนข้างเร็ว แต่ช้ากว่า Allegro","l":2,"c":"tempo"},{"w":"RITARDANDO","d":"Ritardando (rit.)","m":"ค่อย ๆ ช้าลง","l":2,"c":"tempo"},{"w":"ACCELERANDO","d":"Accelerando (accel.)","m":"ค่อย ๆ เร็วขึ้น","l":2,"c":"tempo"},{"w":"FORTISSIMO","d":"Fortissimo (ff)","m":"ดังมาก","l":2,"c":"dyn"},{"w":"PIANISSIMO","d":"Pianissimo (pp)","m":"เบามาก","l":2,"c":"dyn"},{"w":"MEZZOFORTE","d":"Mezzo forte (mf)","m":"ดังปานกลาง","l":2,"c":"dyn"},{"w":"PIZZICATO","d":"Pizzicato","m":"ใช้นิ้วดีดสายแทนการสีด้วยคันชัก","l":2,"c":"art"},{"w":"TRILL","d":"Trill","m":"สลับโน้ตสองตัวที่อยู่ติดกันอย่างรวดเร็ว","l":2,"c":"art"},{"w":"TUTTI","d":"Tutti","m":"ทุกคนในวงบรรเลงพร้อมกัน","l":2,"c":"art"},{"w":"ACCENT","d":"Accent","m":"เน้นเสียงโน้ตตัวนั้นให้หนักกว่าตัวอื่น","l":2,"c":"art"},{"w":"DOLCE","d":"Dolce","m":"อย่างนุ่มนวล อ่อนหวาน","l":2,"c":"exp"},{"w":"CANTABILE","d":"Cantabile","m":"บรรเลงราวกับการขับร้อง","l":2,"c":"exp"},{"w":"ESPRESSIVO","d":"Espressivo","m":"อย่างมีอารมณ์ความรู้สึก","l":2,"c":"exp"},{"w":"ARPEGGIO","d":"Arpeggio","m":"เล่นโน้ตในคอร์ดทีละตัวไล่เรียงกัน","l":2,"c":"theory"},{"w":"TIMBRE","d":"Timbre","m":"สีสันหรือลักษณะเฉพาะของเสียงแต่ละเครื่องดนตรี","l":2,"c":"theory"},{"w":"ETUDE","d":"Étude","m":"บทเพลงสำหรับฝึกทักษะการเล่น","l":2,"c":"form"},{"w":"NOCTURNE","d":"Nocturne","m":"เพลงราตรี บรรยากาศสงบยามค่ำคืน","l":2,"c":"form"},{"w":"MINUET","d":"Minuet","m":"เพลงเต้นรำจังหวะ 3/4 ที่สง่างาม","l":2,"c":"form"},{"w":"FUGUE","d":"Fugue","m":"บทเพลงที่ทำนองหลักเข้ามาไล่เลียนกันหลายแนวเสียงตามกฎเคร่งครัด","l":2,"c":"form"},{"w":"REQUIEM","d":"Requiem","m":"บทเพลงสวดอุทิศแด่ผู้ล่วงลับ","l":2,"c":"form"},{"w":"OVERTURE","d":"Overture","m":"เพลงโหมโรงที่บรรเลงก่อนเริ่มโอเปร่าหรือละคร","l":2,"c":"form"},{"w":"GRAVE","d":"Grave","m":"ช้ามาก เคร่งขรึม หนักแน่น","l":3,"c":"tempo"},{"w":"LARGHETTO","d":"Larghetto","m":"ค่อนข้างช้า (เร็วกว่า Largo เล็กน้อย)","l":3,"c":"tempo"},{"w":"RUBATO","d":"Rubato","m":"ยืดหรือเร่งจังหวะได้อย่างอิสระเพื่อแสดงอารมณ์","l":3,"c":"tempo"},{"w":"PRESTISSIMO","d":"Prestissimo","m":"เร็วที่สุด","l":3,"c":"tempo"},{"w":"SFORZANDO","d":"Sforzando (sfz)","m":"เน้นเสียงหนักขึ้นมาอย่างฉับพลัน","l":3,"c":"dyn"},{"w":"MORENDO","d":"Morendo","m":"ค่อย ๆ เบาและจางหายไปจนเงียบ","l":3,"c":"dyn"},{"w":"TENUTO","d":"Tenuto","m":"กดโน้ตค้างไว้ให้เต็มค่าโน้ต (ขีดเหนือโน้ต)","l":3,"c":"art"},{"w":"MARCATO","d":"Marcato","m":"เน้นเสียงชัดเจนหนักแน่นทุกตัว","l":3,"c":"art"},{"w":"GLISSANDO","d":"Glissando","m":"รูดเสียงไล่ระดับขึ้นหรือลงอย่างต่อเนื่อง","l":3,"c":"art"},{"w":"SOSTENUTO","d":"Sostenuto","m":"ยืดเสียงให้ค้างอย่างต่อเนื่อง (มักช้าลงเล็กน้อย)","l":3,"c":"art"},{"w":"LEGGIERO","d":"Leggiero","m":"อย่างเบาและคล่องแคล่ว","l":3,"c":"art"},{"w":"MAESTOSO","d":"Maestoso","m":"อย่างสง่างาม ยิ่งใหญ่","l":3,"c":"exp"},{"w":"AGITATO","d":"Agitato","m":"อย่างกระวนกระวาย ตื่นเต้น","l":3,"c":"exp"},{"w":"GIOCOSO","d":"Giocoso","m":"อย่างสนุกสนาน ขี้เล่น","l":3,"c":"exp"},{"w":"TRANQUILLO","d":"Tranquillo","m":"อย่างสงบ เงียบสงัด","l":3,"c":"exp"},{"w":"OSTINATO","d":"Ostinato","m":"รูปแบบทำนองหรือจังหวะสั้น ๆ ที่ซ้ำไปเรื่อย ๆ","l":3,"c":"theory"},{"w":"CADENZA","d":"Cadenza","m":"ช่วงที่ผู้เล่นเดี่ยวอวดฝีมืออย่างอิสระ","l":3,"c":"form"},{"w":"SCHERZO","d":"Scherzo","m":"ท่อนเพลงเร็ว สนุกสนาน มักอยู่ในซิมโฟนีหรือโซนาตา","l":3,"c":"form"},{"w":"LIBRETTO","d":"Libretto","m":"บทร้องหรือบทละครของโอเปร่า","l":3,"c":"form"},{"w":"CANON","d":"Canon","m":"ทำนองเดียวกันเล่นไล่ตามกันเป็นทอด ๆ (เช่น Canon in D)","l":3,"c":"form"}];
+var COMPOSERS = [{"t":1,"key":"BACH","full":"Johann Sebastian Bach","th":"โยฮันน์ เซบาสเตียน บาค","wiki":"Johann_Sebastian_Bach","era":"บาโรก","nat":"เยอรมัน 🇩🇪","yrs":"1685–1750","ans":["bach","บาค","บาร์ค"],"works":["Brandenburg Concertos","Toccata and Fugue in D minor","Air on the G String","Goldberg Variations","Mass in B minor"]},{"t":1,"key":"MOZART","full":"Wolfgang Amadeus Mozart","th":"โวล์ฟกัง อะมาเดอุส โมซาร์ท","wiki":"Wolfgang_Amadeus_Mozart","era":"คลาสสิก","nat":"ออสเตรีย 🇦🇹","yrs":"1756–1791","ans":["mozart","โมซาร์ท","โมซาร์ต","โมสาร์ท","โมสาร์ต"],"works":["Eine kleine Nachtmusik","The Magic Flute (ขลุ่ยวิเศษ)","Turkish March (Rondo alla Turca)","Requiem in D minor","Symphony No. 40"]},{"t":1,"key":"BEETHOVEN","full":"Ludwig van Beethoven","th":"ลุดวิก ฟาน เบโทเฟน","wiki":"Ludwig_van_Beethoven","era":"คลาสสิก–โรแมนติก","nat":"เยอรมัน 🇩🇪","yrs":"1770–1827","ans":["beethoven","เบโทเฟน","เบโธเฟน","บีโธเฟน","บีโทเฟน","เบทโฮเฟน"],"works":["Symphony No. 5","Symphony No. 9 \"Ode to Joy\"","Für Elise","Moonlight Sonata","Piano Concerto No. 5 \"Emperor\""]},{"t":1,"key":"CHOPIN","full":"Frédéric Chopin","th":"เฟรเดริก โชแปง","wiki":"Frédéric_Chopin","era":"โรแมนติก","nat":"โปแลนด์ 🇵🇱","yrs":"1810–1849","ans":["chopin","โชแปง","โชแปงค์","โชแป็ง"],"works":["Nocturne Op. 9 No. 2","Minute Waltz","Revolutionary Étude","Fantaisie-Impromptu","Polonaise \"Heroic\""]},{"t":1,"key":"TCHAIKOVSKY","full":"Pyotr Ilyich Tchaikovsky","th":"ปิออตร์ อิลิช ไชคอฟสกี","wiki":"Pyotr_Ilyich_Tchaikovsky","era":"โรแมนติก","nat":"รัสเซีย 🇷🇺","yrs":"1840–1893","ans":["tchaikovsky","chaikovsky","tchaikowsky","ไชคอฟสกี","ไชคอฟสกี้"],"works":["Swan Lake (ทะเลสาบหงส์)","The Nutcracker","The Sleeping Beauty","1812 Overture","Piano Concerto No. 1"]},{"t":1,"key":"VIVALDI","full":"Antonio Vivaldi","th":"อันโตนีโอ วีวัลดี","wiki":"Antonio_Vivaldi","era":"บาโรก","nat":"อิตาลี 🇮🇹","yrs":"1678–1741","ans":["vivaldi","วีวัลดี","วิวัลดี","วิวาลดี","วีวาลดี"],"works":["The Four Seasons (สี่ฤดู)","Gloria in D major","L'estro armonico","Concerto for Two Trumpets"]},{"t":1,"key":"HANDEL","full":"George Frideric Handel","th":"จอร์จ ฟริดริก ฮันเดล","wiki":"George_Frideric_Handel","era":"บาโรก","nat":"เยอรมัน–อังกฤษ 🇩🇪🇬🇧","yrs":"1685–1759","ans":["handel","haendel","ฮันเดล","แฮนเดล","เฮนเดล"],"works":["Messiah (Hallelujah Chorus)","Water Music","Music for the Royal Fireworks","Zadok the Priest"]},{"t":1,"key":"HAYDN","full":"Joseph Haydn","th":"โยเซฟ ไฮเดิน","wiki":"Joseph_Haydn","era":"คลาสสิก","nat":"ออสเตรีย 🇦🇹","yrs":"1732–1809","ans":["haydn","ไฮเดิน","ไฮเดน","ไฮดน์"],"works":["Symphony No. 94 \"Surprise\"","The Creation","String Quartet \"Emperor\"","Trumpet Concerto in E-flat"]},{"t":1,"key":"SCHUBERT","full":"Franz Schubert","th":"ฟรานซ์ ชูเบิร์ต","wiki":"Franz_Schubert","era":"โรแมนติกตอนต้น","nat":"ออสเตรีย 🇦🇹","yrs":"1797–1828","ans":["schubert","ชูเบิร์ต","ชูเบิร์ท","ชูแบร์ท"],"works":["Unfinished Symphony (No. 8)","Ave Maria","Erlkönig","Trout Quintet","Serenade (Ständchen)"]},{"t":1,"key":"DEBUSSY","full":"Claude Debussy","th":"โคลด เดอบุสซี","wiki":"Claude_Debussy","era":"อิมเพรสชันนิสม์","nat":"ฝรั่งเศส 🇫🇷","yrs":"1862–1918","ans":["debussy","เดอบุสซี","เดอบูซี","เดอบุซซี","เดบุสซี"],"works":["Clair de lune","Prélude à l'après-midi d'un faune","La Mer","Arabesque No. 1","Golliwogg's Cakewalk"]},{"t":2,"key":"BRAHMS","full":"Johannes Brahms","th":"โยฮันเนส บรามส์","wiki":"Johannes_Brahms","era":"โรแมนติก","nat":"เยอรมัน 🇩🇪","yrs":"1833–1897","ans":["brahms","บรามส์","บราห์มส์","บรามส"],"works":["Hungarian Dance No. 5","Lullaby (Wiegenlied)","A German Requiem","Symphony No. 4"]},{"t":2,"key":"LISZT","full":"Franz Liszt","th":"ฟรานซ์ ลิสต์","wiki":"Franz_Liszt","era":"โรแมนติก","nat":"ฮังการี 🇭🇺","yrs":"1811–1886","ans":["liszt","ลิสต์","ลิซท์","ลิสท์"],"works":["Hungarian Rhapsody No. 2","Liebestraum No. 3","La Campanella","Transcendental Études"]},{"t":2,"key":"WAGNER","full":"Richard Wagner","th":"ริชาร์ด วากเนอร์","wiki":"Richard_Wagner","era":"โรแมนติก","nat":"เยอรมัน 🇩🇪","yrs":"1813–1883","ans":["wagner","วากเนอร์","วากเนอ","วากเนร์"],"works":["Ride of the Valkyries","Der Ring des Nibelungen","Tristan und Isolde","Bridal Chorus (Lohengrin)"]},{"t":2,"key":"VERDI","full":"Giuseppe Verdi","th":"จูเซปเป แวร์ดี","wiki":"Giuseppe_Verdi","era":"โรแมนติก","nat":"อิตาลี 🇮🇹","yrs":"1813–1901","ans":["verdi","แวร์ดี","เวอร์ดี","แวร์ดิ"],"works":["La traviata","Aida","Rigoletto (\"La donna è mobile\")","Nabucco"]},{"t":2,"key":"DVORAK","full":"Antonín Dvořák","th":"อันโตนิน ดวอร์ชาก","wiki":"Antonín_Dvořák","era":"โรแมนติก","nat":"เช็ก 🇨🇿","yrs":"1841–1904","ans":["dvorak","ดวอร์ชาก","ดโวชาก","ดวอชาค","ดโวรัก"],"works":["Symphony No. 9 \"From the New World\"","Cello Concerto in B minor","Slavonic Dances","Humoresque No. 7"]},{"t":2,"key":"MENDELSSOHN","full":"Felix Mendelssohn","th":"เฟลิกซ์ เมนเดิลส์โซน","wiki":"Felix_Mendelssohn","era":"โรแมนติก","nat":"เยอรมัน 🇩🇪","yrs":"1809–1847","ans":["mendelssohn","mendelsohn","เมนเดลโซห์น","เมนเดิลส์โซน","เมนเดลซอน","เมนเดลโซน"],"works":["Wedding March","Violin Concerto in E minor","\"Italian\" Symphony","Songs Without Words"]},{"t":2,"key":"SCHUMANN","full":"Robert Schumann","th":"โรแบร์ท ชูมันน์","wiki":"Robert_Schumann","era":"โรแมนติก","nat":"เยอรมัน 🇩🇪","yrs":"1810–1856","ans":["schumann","schuman","ชูมันน์","ชูมัน","ชูมานน์"],"works":["Träumerei (Kinderszenen)","Carnaval","Piano Concerto in A minor","Dichterliebe"]},{"t":2,"key":"RACHMANINOFF","full":"Sergei Rachmaninoff","th":"เซียร์เกย์ รัคมานินอฟ","wiki":"Sergei_Rachmaninoff","era":"โรแมนติกตอนปลาย","nat":"รัสเซีย 🇷🇺","yrs":"1873–1943","ans":["rachmaninoff","rachmaninov","รัคมานินอฟ","ราคมานินอฟ","รัคมานีนอฟ","รัชมานินอฟ"],"works":["Piano Concerto No. 2","Rhapsody on a Theme of Paganini","Prelude in C-sharp minor","Vocalise"]},{"t":2,"key":"GRIEG","full":"Edvard Grieg","th":"เอดวาร์ด กรีก","wiki":"Edvard_Grieg","era":"โรแมนติก","nat":"นอร์เวย์ 🇳🇴","yrs":"1843–1907","ans":["grieg","กรีก","กรีค"],"works":["In the Hall of the Mountain King","Morning Mood (Peer Gynt)","Piano Concerto in A minor","Lyric Pieces"]},{"t":2,"key":"PUCCINI","full":"Giacomo Puccini","th":"จาโกโม ปุชชีนี","wiki":"Giacomo_Puccini","era":"โรแมนติกตอนปลาย","nat":"อิตาลี 🇮🇹","yrs":"1858–1924","ans":["puccini","ปุชชีนี","ปุชชินี","พุชชินี"],"works":["La bohème","Tosca","Madama Butterfly","Turandot (\"Nessun dorma\")"]},{"t":3,"key":"STRAVINSKY","full":"Igor Stravinsky","th":"อีกอร์ สตราวินสกี","wiki":"Igor_Stravinsky","era":"ศตวรรษที่ 20","nat":"รัสเซีย 🇷🇺","yrs":"1882–1971","ans":["stravinsky","สตราวินสกี","สตราวินสกี้"],"works":["The Rite of Spring","The Firebird","Petrushka","Pulcinella"]},{"t":3,"key":"RAVEL","full":"Maurice Ravel","th":"มอริส ราเวล","wiki":"Maurice_Ravel","era":"อิมเพรสชันนิสม์","nat":"ฝรั่งเศส 🇫🇷","yrs":"1875–1937","ans":["ravel","ราเวล","ราแวล"],"works":["Boléro","Pavane pour une infante défunte","Daphnis et Chloé","Piano Concerto in G"]},{"t":3,"key":"MAHLER","full":"Gustav Mahler","th":"กุสตาฟ มาห์เลอร์","wiki":"Gustav_Mahler","era":"โรแมนติกตอนปลาย","nat":"ออสเตรีย 🇦🇹","yrs":"1860–1911","ans":["mahler","มาห์เลอร์","มาเลอร์"],"works":["Symphony No. 2 \"Resurrection\"","Symphony No. 5 (Adagietto)","Das Lied von der Erde","Symphony No. 1 \"Titan\""]},{"t":3,"key":"SAINT-SAENS","full":"Camille Saint-Saëns","th":"กามีย์ แซ็ง-ซ็องส์","wiki":"Camille_Saint-Saëns","era":"โรแมนติก","nat":"ฝรั่งเศส 🇫🇷","yrs":"1835–1921","ans":["saintsaens","แซ็งซ็องส์","แซงซองส์","แซงซอง"],"works":["The Carnival of the Animals (The Swan)","Danse macabre","Symphony No. 3 \"Organ\"","Introduction and Rondo Capriccioso"]},{"t":3,"key":"ROSSINI","full":"Gioachino Rossini","th":"จิโออากีโน รอสซีนี","wiki":"Gioachino_Rossini","era":"โรแมนติกตอนต้น","nat":"อิตาลี 🇮🇹","yrs":"1792–1868","ans":["rossini","รอสซีนี","รอสสินี","รอสซินี"],"works":["William Tell Overture","The Barber of Seville","La Cenerentola","The Thieving Magpie Overture"]},{"t":3,"key":"BIZET","full":"Georges Bizet","th":"ฌอร์ฌ บีแซ","wiki":"Georges_Bizet","era":"โรแมนติก","nat":"ฝรั่งเศส 🇫🇷","yrs":"1838–1875","ans":["bizet","บีแซ","บิเซ","บิเซต์","บีเซต์"],"works":["Carmen (Habanera, Toreador Song)","L'Arlésienne Suites","The Pearl Fishers","Symphony in C"]},{"t":3,"key":"PROKOFIEV","full":"Sergei Prokofiev","th":"เซียร์เกย์ โปรโคฟีเยฟ","wiki":"Sergei_Prokofiev","era":"ศตวรรษที่ 20","nat":"รัสเซีย 🇷🇺","yrs":"1891–1953","ans":["prokofiev","prokofieff","โปรโคฟีเยฟ","โปรโคเฟียฟ","โปรโคฟิเอฟ"],"works":["Peter and the Wolf","Romeo and Juliet (Dance of the Knights)","Classical Symphony","Lieutenant Kijé"]},{"t":3,"key":"SHOSTAKOVICH","full":"Dmitri Shostakovich","th":"ดมีตรี ชอสตาโกวิช","wiki":"Dmitri_Shostakovich","era":"ศตวรรษที่ 20","nat":"รัสเซีย 🇷🇺","yrs":"1906–1975","ans":["shostakovich","ชอสตาโกวิช","โชสตาโกวิช","ชอสตาโควิช","โชสตาโควิช"],"works":["Waltz No. 2 (Jazz Suite)","Symphony No. 5","Festive Overture","Symphony No. 7 \"Leningrad\""]},{"t":3,"key":"BERLIOZ","full":"Hector Berlioz","th":"แอกตอร์ แบร์ลีโอซ","wiki":"Hector_Berlioz","era":"โรแมนติก","nat":"ฝรั่งเศส 🇫🇷","yrs":"1803–1869","ans":["berlioz","แบร์ลีโอซ","เบอร์ลิออซ","แบร์ลิโอซ","เบอร์ลิโอซ"],"works":["Symphonie fantastique","Roman Carnival Overture","The Damnation of Faust","Harold en Italie"]},{"t":3,"key":"ELGAR","full":"Edward Elgar","th":"เอดเวิร์ด เอลการ์","wiki":"Edward_Elgar","era":"โรแมนติกตอนปลาย","nat":"อังกฤษ 🇬🇧","yrs":"1857–1934","ans":["elgar","เอลการ์","เอลก้าร์","เอลการ"],"works":["Pomp and Circumstance March No. 1","Enigma Variations (Nimrod)","Cello Concerto in E minor","Salut d'Amour"]},{"t":3,"key":"HOLST","full":"Gustav Holst","th":"กุสตาฟ โฮลสต์","wiki":"Gustav_Holst","era":"ศตวรรษที่ 20","nat":"อังกฤษ 🇬🇧","yrs":"1874–1934","ans":["holst","โฮลสต์","โฮลส์"],"works":["The Planets (Mars, Jupiter)","St Paul's Suite","First Suite in E-flat for Military Band"]},{"t":3,"key":"SATIE","full":"Erik Satie","th":"เอริก ซาตี","wiki":"Erik_Satie","era":"ศตวรรษที่ 20","nat":"ฝรั่งเศส 🇫🇷","yrs":"1866–1925","ans":["satie","ซาตี","ซาที","ซาติ"],"works":["Gymnopédie No. 1","Gnossiennes","Je te veux","Vexations"]}];
+var CAT = {"tempo":"ความเร็ว (Tempo)","dyn":"ความดัง-เบา (Dynamics)","art":"วิธีการเล่น (Articulation)","exp":"อารมณ์เพลง (Expression)","form":"รูปแบบบทเพลง (Form)","theory":"ทฤษฎีดนตรี (Theory)"};
+
+/* ---------------- helpers ---------------- */
+function shuffle(a){var o=a.slice();for(var i=o.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=o[i];o[i]=o[j];o[j]=t;}return o;}
+function rand(a,b){return a+Math.random()*(b-a);}
+function fmt(s){var m=Math.floor(s/60),r=s%60;return m+':'+(r<10?'0':'')+r;}
+function letter(i){return String.fromCharCode(65+i);}
+function norm(s){return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[\u0E47-\u0E4C]/g,'').replace(/[^a-z\u0E01-\u0E3A\u0E40-\u0E46]/g,'');}
+function getBest(k){try{var v=localStorage.getItem('cmg_'+k);return v===null?null:JSON.parse(v);}catch(e){return null;}}
+function setBest(k,v,lower){var b=getBest(k);if(b===null||(lower?v<b:v>b)){try{localStorage.setItem('cmg_'+k,JSON.stringify(v));}catch(e){}return true;}return false;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function q(id){return document.getElementById(id);}
+function all(node,sel){return Array.prototype.slice.call(node.querySelectorAll(sel));}
+function rule(){return '<div class="rule"><span></span></div>';}
+
+/* ---------------- config ---------------- */
+var LV={easy:{name:'ง่าย',icon:'🌱',roman:'I'},med:{name:'ปานกลาง',icon:'🎯',roman:'II'},hard:{name:'ยาก',icon:'🔥',roman:'III'}};
+var QZ={
+  easy:{n:8,opts:3,time:0,life:{ff:2,aud:2,hint:2,swap:2},pool:function(t){return t.l===1;},same:false,aud:[.6,.85]},
+  med:{n:10,opts:4,time:30,life:{ff:1,aud:1,hint:1,swap:1},pool:function(t){return t.l<=2;},same:false,aud:[.42,.68]},
+  hard:{n:12,opts:4,time:15,life:{ff:1,aud:1,hint:1,swap:0},pool:function(t){return t.l>=2;},same:true,aud:[.3,.55]}
+};
+var LIFE={ff:'✂️ 50:50',aud:'📊 ถามผู้ชม',hint:'💡 คำใบ้',swap:'🔄 เปลี่ยนข้อ'};
+var CWS={
+  easy:{n:6,pool:function(t){return t.l===1;},given:true,len:true,reveal:Infinity},
+  med:{n:9,pool:function(t){return t.l<=2;},given:false,len:true,reveal:3},
+  hard:{n:12,pool:function(t){return t.l>=2;},given:false,len:false,reveal:1}
+};
+var CPS={
+  easy:{pool:function(c){return c.t===1;},pre:.35,works:5,tries:Infinity,fb:'full',blur:false},
+  med:{pool:function(c){return c.t<=2;},pre:'first',works:3,tries:5,fb:'green',blur:false},
+  hard:{pool:function(c){return c.t>=2;},pre:0,works:2,tries:3,fb:'none',blur:true}
+};
+var CP_ROUNDS=10,CP_BASE=10;
+
+/* ---------------- shell ---------------- */
+var TABS=[
+  {k:'quiz',label:'ทายศัพท์ดนตรี',icon:'🎵'},
+  {k:'crossword',label:'อักษรไขว้',icon:'🧩'},
+  {k:'composer',label:'ทายนักประพันธ์',icon:'🎩'}
+];
+var TAB='quiz';
+
+function renderTabs(){
+  q('tabs').innerHTML=TABS.map(function(t){
+    return '<button class="tab'+(TAB===t.k?' is-active':'')+'" data-tab="'+t.k+'"><span>'+t.icon+'</span>'+t.label+'</button>';
+  }).join('');
+}
+function showTab(k){
+  TAB=k;
+  TABS.forEach(function(t){ q('view-'+t.k).classList.toggle('hidden',t.k!==k); });
+  renderTabs();
+  if(k==='quiz') quizView();
+  else if(k==='crossword') cwView();
+  else cpView();
+}
+function levelTag(l){return '<span class="tag tag-'+l+'">'+LV[l].icon+' ระดับ'+LV[l].name+'</span>';}
+
+function pickerHtml(eyebrow,title,desc,bests){
+  var cards=['easy','med','hard'].map(function(k){
+    return '<button class="level-card" data-level="'+k+'">'+
+      '<span class="level-roman">'+LV[k].roman+'</span>'+
+      '<span class="level-icon">'+LV[k].icon+'</span>'+
+      '<span class="level-name">'+LV[k].name+'</span>'+
+      '<span>'+desc[k].map(function(line){return '<span class="level-li">'+line+'</span>';}).join('')+'</span>'+
+      '<span class="level-best">🏆 สถิติที่ดีที่สุด: '+(bests[k]||'—')+'</span>'+
+    '</button>';
+  }).join('');
+  return '<section class="ornate-panel fade-up panel-pad"><div class="center">'+
+    '<p class="eyebrow">'+eyebrow+'</p>'+
+    '<h2 class="display-title mt2" style="font-size:1.65rem">'+title+'</h2>'+rule()+
+    '<p class="small muted">เลือกระดับความยากที่ต้องการ</p></div>'+
+    '<div class="grid3 mt7">'+cards+'</div></section>';
+}
+function bindLevels(view,cb){
+  all(view,'[data-level]').forEach(function(btn){
+    btn.onclick=function(){ cb(btn.getAttribute('data-level')); };
+  });
+}
+
+/* ---------------- QUIZ ---------------- */
+var QD={
+  easy:['ศัพท์พื้นฐาน','8 ข้อ · 3 ตัวเลือก','ไม่จับเวลา','ตัวช่วยอย่างละ 2 ครั้ง'],
+  med:['ศัพท์พื้นฐาน + ระดับกลาง','10 ข้อ · 4 ตัวเลือก','จับเวลาข้อละ 30 วินาที','ตัวช่วยอย่างละ 1 ครั้ง'],
+  hard:['ศัพท์ระดับกลาง–สูง','12 ข้อ · ตัวเลือกหมวดเดียวกัน','จับเวลาข้อละ 15 วินาที','ไม่มีตัวช่วยเปลี่ยนข้อ']
+};
+var Q=null;
+
+function quizBests(){
+  var o={};
+  ['easy','med','hard'].forEach(function(k){
+    var b=getBest('quiz_'+k);
+    o[k]=b===null?null:b+' / '+QZ[k].n;
+  });
+  return o;
+}
+function makeQuestion(term,cfg){
+  var others=TERMS.filter(function(x){return x!==term&&x.m!==term.m;});
+  var distractors=cfg.same
+    ? shuffle(others.filter(function(x){return x.c===term.c;}))
+    : shuffle(others.filter(cfg.pool));
+  if(distractors.length<cfg.opts-1){
+    distractors=distractors.concat(shuffle(others.filter(function(x){return distractors.indexOf(x)<0;})));
+  }
+  return {t:term,rev:Math.random()<.5,opts:shuffle([term].concat(distractors.slice(0,cfg.opts-1))),gone:[],usedL:[]};
+}
+function quizStart(level){
+  var cfg=QZ[level];
+  var pool=shuffle(TERMS.filter(cfg.pool));
+  Q={level:level,cfg:cfg,pool:pool,idx:0,score:0,life:Object.assign({},cfg.life),swapIdx:cfg.n,
+     cur:makeQuestion(pool[0],cfg),notes:[],picked:null,left:cfg.time||0,finished:false,record:false,tick:null,anim:true};
+  quizView();
+}
+function quizView(){
+  var view=q('view-quiz');
+  if(!Q||!Q.cfg){
+    view.innerHTML=pickerHtml('เกมที่หนึ่ง · The Vocabulary','ทายศัพท์ดนตรีคลาสสิก',QD,quizBests());
+    bindLevels(view,quizStart);
+    return;
+  }
+  if(Q.finished){
+    view.innerHTML=quizResultHtml();
+    bindQuizResult(view);
+    return;
+  }
+  view.innerHTML=quizQuestionHtml();
+  bindQuiz(view);
+  quizTick();
+}
+function quizQuestionHtml(){
+  var c=Q.cur,cfg=Q.cfg,term=c.t;
+  var prompt=c.rev
+    ? '<p class="small gold-text mt4">คำนี้หมายถึงอะไร?</p><div class="term">'+esc(term.d)+'</div>'
+    : '<p class="small gold-text mt4">คำศัพท์ใดตรงกับความหมายนี้?</p><div class="display-title" style="font-size:1.3rem">'+esc(term.m)+'</div>';
+
+  var opts=c.opts.map(function(o,i){
+    var cls='opt';
+    if(c.gone.indexOf(i)>=0) cls+=' is-gone';
+    if(Q.picked!==null){
+      if(o===term) cls+=' is-right';
+      else if(i===Q.picked) cls+=' is-wrong';
+    }
+    var txt=c.rev?esc(o.m):esc(o.d);
+    return '<button class="'+cls+'" data-opt="'+i+'"'+(Q.picked!==null||c.gone.indexOf(i)>=0?' disabled':'')+'>'+
+      '<span class="opt-letter">'+letter(i)+'</span><span>'+txt+'</span></button>';
+  }).join('');
+
+  var lifeBtns=Object.keys(LIFE).map(function(k){
+    var n=Q.life[k];
+    if(!n&&n!==0) return '';
+    var used=c.usedL.indexOf(k)>=0;
+    return '<button class="btn btn-ghost btn-sm" data-life="'+k+'"'+(Q.picked!==null||n<=0||used?' disabled':'')+'>'+LIFE[k]+' ('+n+')</button>';
+  }).join('');
+
+  var anim=Q.anim?' fade-up':'';
+  Q.anim=false;
+  return '<section class="ornate-panel'+anim+' panel-pad">'+
+    '<div class="between">'+levelTag(Q.level)+
+      '<span class="small muted">ข้อ '+(Q.idx+1)+' / '+cfg.n+' · คะแนน '+Q.score+'</span>'+
+      '<span id="quiz-timer" class="'+(cfg.time&&Q.left<=5&&Q.picked===null?'timer is-low':'timer')+'">'+(cfg.time?'⏱ '+fmt(Q.left):'⏱ ไม่จับเวลา')+'</span>'+
+      '<button class="btn btn-ghost btn-sm" data-menu="1">↩ เปลี่ยนระดับ</button>'+
+    '</div>'+
+    '<div class="bar mt3"><span style="width:'+((Q.idx/cfg.n)*100)+'%"></span></div>'+
+    prompt+
+    '<div class="mt4 stack">'+opts+'</div>'+
+    '<div class="row mt4">'+lifeBtns+'</div>'+
+    quizNotesHtml()+quizFeedbackHtml()+
+  '</section>';
+}
+function quizNotesHtml(){
+  return Q.notes.map(function(n){
+    if(n.kind==='aud'){
+      var rows=n.rows.map(function(r){
+        return '<div class="aud-row"><b>'+r.label+'</b><div class="aud-track">'+
+          '<div class="aud-fill" style="width:'+r.value+'%"></div></div><span>'+r.value+'%</span></div>';
+      }).join('');
+      return '<div class="aud">'+rows+(n.warn?'<p class="small muted">⚠️ ผู้ชมอาจเดาผิดได้ในระดับยาก</p>':'')+'</div>';
+    }
+    return '<div class="note">'+n.html+'</div>';
+  }).join('');
+}
+function quizFeedbackHtml(){
+  if(Q.picked===null) return '';
+  var c=Q.cur,ok=c.opts[Q.picked]===c.t;
+  return '<div class="fade-up mt5">'+
+    '<p class="'+(ok?'right-text':'wrong-text')+'">'+(ok?'✅ ถูกต้อง!':'❌ ยังไม่ถูก')+'</p>'+
+    '<p class="display-title mt1" style="font-size:1.2rem">'+esc(c.t.d)+
+      ' <span class="muted" style="font-size:.85rem">— '+esc(c.t.m)+'</span></p>'+
+    '<div class="mt4"><button class="btn btn-gold" data-next="1">'+
+      (Q.idx+1>=Q.cfg.n?'ดูผลคะแนน 🏆':'ข้อต่อไป →')+'</button></div></div>';
+}
+function bindQuiz(view){
+  all(view,'[data-opt]').forEach(function(btn){
+    btn.onclick=function(){ quizAnswer(+btn.getAttribute('data-opt')); };
+  });
+  all(view,'[data-life]').forEach(function(btn){
+    btn.onclick=function(){ quizLife(btn.getAttribute('data-life')); };
+  });
+  all(view,'[data-next]').forEach(function(btn){ btn.onclick=quizNext; });
+  all(view,'[data-menu]').forEach(function(btn){
+    btn.onclick=function(){ Q=null; quizView(); };
+  });
+}
+function quizTick(){
+  if(!Q||!Q.cfg||Q.finished) return;
+  if(Q.tick){ clearTimeout(Q.tick); Q.tick=null; }
+  if(!Q.cfg.time||Q.picked!==null) return;
+  if(Q.left<=0){ quizAnswer(-1); return; }
+  Q.tick=setTimeout(function(){
+    if(!Q||Q.finished||Q.picked!==null) return;
+    Q.left--;
+    if(Q.left<=0){ quizAnswer(-1); return; }
+    var t=q('quiz-timer');
+    if(t){
+      t.textContent='⏱ '+fmt(Q.left);
+      t.className=Q.left<=5?'timer is-low':'timer';
+    }
+    quizTick();
+  },1000);
+}
+function quizAnswer(i){
+  if(!Q||Q.picked!==null) return;
+  if(i>=0&&Q.cur.gone.indexOf(i)>=0) return;
+  Q.picked=i;
+  if(i>=0&&Q.cur.opts[i]===Q.cur.t) Q.score++;
+  quizView();
+}
+function quizNext(){
+  if(Q.idx+1>=Q.cfg.n){
+    Q.record=setBest('quiz_'+Q.level,Q.score)&&Q.score>0;
+    Q.finished=true;
+    quizView();
+    return;
+  }
+  Q.idx++;
+  Q.cur=makeQuestion(Q.pool[Q.idx],Q.cfg);
+  Q.notes=[];Q.picked=null;Q.left=Q.cfg.time||0;Q.anim=true;
+  quizView();
+}
+function quizLife(kind){
+  if(!Q||Q.picked!==null||!Q.life[kind]) return;
+  var c=Q.cur,cfg=Q.cfg;
+  function wrongIdx(){
+    return c.opts.map(function(_,i){return i;}).filter(function(i){return c.opts[i]!==c.t&&c.gone.indexOf(i)<0;});
+  }
+  function hide(i){ if(c.gone.indexOf(i)<0) c.gone.push(i); }
+
+  if(c.usedL.indexOf(kind)>=0){
+    Q.notes.push({html:'ใช้ตัวช่วยนี้กับข้อนี้ไปแล้ว ลองตัวช่วยอื่นดูนะ'});
+    quizView(); return;
+  }
+  if(kind==='swap'){
+    if(Q.swapIdx>=Q.pool.length){
+      Q.notes.push({html:'ไม่มีคำศัพท์เหลือให้เปลี่ยนแล้ว'});
+      quizView(); return;
+    }
+    Q.life.swap--;Q.swapIdx++;
+    Q.cur=makeQuestion(Q.pool[Q.swapIdx],cfg);
+    Q.notes=[];Q.picked=null;Q.left=cfg.time||0;Q.anim=true;
+    quizView(); return;
+  }
+  if(kind==='ff'){
+    var wrong=wrongIdx();
+    if(wrong.length<=1){
+      Q.notes.push({html:'เหลือตัวเลือกน้อยแล้ว ใช้ตัวช่วยนี้ไม่ได้'});
+      quizView(); return;
+    }
+    shuffle(wrong).slice(0,Math.min(cfg.opts===3?1:2,wrong.length-1)).forEach(hide);
+    Q.notes.push({html:'✂️ ตัดตัวเลือกที่ผิดออกให้แล้ว!'});
+  }
+  if(kind==='aud'){
+    var visible=c.opts.map(function(_,i){return i;}).filter(function(i){return c.gone.indexOf(i)<0;});
+    var correctIdx=c.opts.indexOf(c.t);
+    var chance=rand(cfg.aud[0],cfg.aud[1]);
+    if(visible.length===2) chance=Math.min(.9,chance+.15);
+    var others=visible.filter(function(i){return i!==correctIdx;});
+    var weights=others.map(function(){return Math.random()+.2;});
+    var total=weights.reduce(function(a,b){return a+b;},0)||1;
+    var share={};
+    share[correctIdx]=chance;
+    others.forEach(function(i,j){ share[i]=((1-chance)*weights[j])/total; });
+    if(Q.level==='hard'&&Math.random()<.25&&others.length){
+      var sw=others[Math.floor(Math.random()*others.length)];
+      var tmp=share[correctIdx];share[correctIdx]=share[sw];share[sw]=tmp;
+    }
+    var rounded={},sum=0;
+    visible.forEach(function(i){ rounded[i]=Math.round(share[i]*100); sum+=rounded[i]; });
+    rounded[visible[0]]+=100-sum;
+    Q.notes.push({kind:'aud',rows:visible.map(function(i){return {label:letter(i),value:rounded[i]};}),warn:Q.level==='hard'});
+  }
+  if(kind==='hint'){
+    var html='💡 หมวด: <b>'+CAT[c.t.c]+'</b>';
+    if(c.rev){
+      html+=' · คำตอบขึ้นต้นด้วย <b class="gold-text">"'+c.t.w[0]+'"</b> มี <b>'+c.t.w.length+'</b> ตัวอักษร';
+    } else {
+      var rest=wrongIdx();
+      if(rest.length>1){
+        var removed=rest[Math.floor(Math.random()*rest.length)];
+        hide(removed);
+        html+=' · และตัดตัวเลือกผิดออกให้ 1 ข้อ ('+letter(removed)+')';
+      }
+    }
+    Q.notes.push({html:html});
+  }
+  c.usedL.push(kind);
+  Q.life[kind]--;
+  quizView();
+}
+function quizResultHtml(){
+  var pct=Q.score/Q.cfg.n;
+  var msg=pct>=.9?'🏆 ยอดเยี่ยมมาก!':pct>=.7?'🎻 เก่งมาก!':pct>=.4?'🎶 พอใช้ได้ ลองอีกครั้งนะ':'📖 ทบทวนศัพท์อีกนิดนะ';
+  return '<section class="ornate-panel fade-up panel-pad center">'+levelTag(Q.level)+
+    '<p class="eyebrow mt7">คะแนนรวม</p>'+
+    '<p class="display-title mt2" style="font-size:3.2rem"><span class="gold-text">'+Q.score+
+      '</span><span class="muted" style="font-size:1.4rem"> / '+Q.cfg.n+'</span></p>'+rule()+
+    '<p>'+msg+'</p>'+(Q.record?'<p class="small gold-text mt2">🏆 สถิติใหม่!</p>':'')+
+    '<div class="row mt7" style="justify-content:center">'+
+      '<button class="btn btn-gold" data-again="1">🔄 เล่นอีกครั้ง</button>'+
+      '<button class="btn btn-ghost" data-menu="1">เปลี่ยนระดับ</button></div></section>';
+}
+function bindQuizResult(view){
+  all(view,'[data-again]').forEach(function(btn){ btn.onclick=function(){ quizStart(Q.level); }; });
+  all(view,'[data-menu]').forEach(function(btn){ btn.onclick=function(){ Q=null; quizView(); }; });
+}
+
+/* ---------------- CROSSWORD ---------------- */
+var CWD={
+  easy:['ศัพท์พื้นฐาน 6 คำ','มีตัวอักษรแรกของทุกคำให้','บอกจำนวนตัวอักษร','เฉลยรายคำได้ไม่จำกัด'],
+  med:['ศัพท์พื้นฐาน + ระดับกลาง 9 คำ','บอกจำนวนตัวอักษร','เฉลยรายคำได้ 3 ครั้ง'],
+  hard:['ศัพท์ระดับกลาง–สูง 12 คำ','ไม่บอกจำนวนตัวอักษร','เฉลยรายคำได้ 1 ครั้ง']
+};
+var MAX_SIZE=15;
+var CW=null;
+
+function ckey(r,c){return r+','+c;}
+function cwBests(){
+  var o={};
+  ['easy','med','hard'].forEach(function(k){
+    var b=getBest('cw_'+k);
+    o[k]=b===null?null:'⏱ '+fmt(b);
+  });
+  return o;
+}
+function cwTryBuild(pool,target){
+  var candidates=shuffle(pool).slice(0,target+10).sort(function(a,b){return b.w.length-a.w.length;});
+  var first=candidates.shift();
+  var rest=shuffle(candidates);
+  var grid=new Map(),placed=[];
+  function step(dir){return dir==='A'?[0,1]:[1,0];}
+  function put(term,r,c,dir){
+    var d=step(dir);
+    for(var i=0;i<term.w.length;i++){
+      var k=ckey(r+d[0]*i,c+d[1]*i);
+      if(!grid.has(k)) grid.set(k,{ch:term.w[i],dirs:new Set()});
+      grid.get(k).dirs.add(dir);
+    }
+    placed.push({w:term.w,d:term.d,m:term.m,c:term.c,r:r,col:c,dir:dir});
+  }
+  function fits(word,r,c,dir){
+    var d=step(dir);
+    if(grid.has(ckey(r-d[0],c-d[1]))||grid.has(ckey(r+d[0]*word.length,c+d[1]*word.length))) return false;
+    var crosses=0;
+    for(var i=0;i<word.length;i++){
+      var rr=r+d[0]*i,cc=c+d[1]*i;
+      var cell=grid.get(ckey(rr,cc));
+      if(cell){
+        if(cell.ch!==word[i]||cell.dirs.has(dir)) return false;
+        crosses++;
+      } else if(dir==='A'){
+        if(grid.has(ckey(rr-1,cc))||grid.has(ckey(rr+1,cc))) return false;
+      } else if(grid.has(ckey(rr,cc-1))||grid.has(ckey(rr,cc+1))) return false;
+    }
+    if(!crosses) return false;
+    var minR=r,maxR=r+d[0]*(word.length-1),minC=c,maxC=c+d[1]*(word.length-1);
+    placed.forEach(function(p){
+      var pd=step(p.dir);
+      minR=Math.min(minR,p.r);
+      minC=Math.min(minC,p.col);
+      maxR=Math.max(maxR,p.r+pd[0]*(p.w.length-1));
+      maxC=Math.max(maxC,p.col+pd[1]*(p.w.length-1));
+    });
+    return maxR-minR+1<=MAX_SIZE&&maxC-minC+1<=MAX_SIZE;
+  }
+  put(first,0,0,Math.random()<.5?'A':'D');
+  for(var t=0;t<rest.length;t++){
+    if(placed.length>=target) break;
+    var term=rest[t],spots=[];
+    placed.forEach(function(p){
+      var nextDir=p.dir==='A'?'D':'A';
+      for(var i=0;i<p.w.length;i++){
+        for(var j=0;j<term.w.length;j++){
+          if(p.w[i]!==term.w[j]) continue;
+          var r=p.dir==='A'?p.r-j:p.r+i;
+          var c=p.dir==='A'?p.col+i:p.col-j;
+          if(fits(term.w,r,c,nextDir)) spots.push([r,c,nextDir]);
+        }
+      }
+    });
+    if(spots.length){
+      var spot=spots[Math.floor(Math.random()*spots.length)];
+      put(term,spot[0],spot[1],spot[2]);
+    }
+  }
+  return placed;
+}
+function cwBuild(level){
+  var cfg=CWS[level];
+  var pool=TERMS.filter(function(t){return cfg.pool(t)&&t.w.length>=4&&t.w.length<=11;});
+  var best=[];
+  for(var a=0;a<150&&best.length<cfg.n;a++){
+    var placed=cwTryBuild(pool,cfg.n);
+    if(placed.length>best.length) best=placed;
+  }
+  if(!best.length) return null;
+  var minR=Math.min.apply(null,best.map(function(p){return p.r;}));
+  var minC=Math.min.apply(null,best.map(function(p){return p.col;}));
+  var words=best.map(function(p){
+    var o={};
+    Object.keys(p).forEach(function(k){o[k]=p[k];});
+    o.r=p.r-minR;
+    o.col=p.col-minC;
+    return o;
+  });
+  var rows=Math.max.apply(null,words.map(function(p){return p.r+(p.dir==='D'?p.w.length:1);}));
+  var cols=Math.max.apply(null,words.map(function(p){return p.col+(p.dir==='A'?p.w.length:1);}));
+  var startKeys=[];
+  words.forEach(function(p){
+    var k=ckey(p.r,p.col);
+    if(startKeys.indexOf(k)<0) startKeys.push(k);
+  });
+  startKeys.sort(function(x,y){
+    var a1=x.split(',').map(Number),b1=y.split(',').map(Number);
+    return a1[0]-b1[0]||a1[1]-b1[1];
+  });
+  var nums=new Map();
+  startKeys.forEach(function(k,i){ nums.set(k,i+1); });
+  words.forEach(function(p){ p.num=nums.get(ckey(p.r,p.col)); });
+  var cells=new Map();
+  words.forEach(function(p,idx){
+    var d=p.dir==='A'?[0,1]:[1,0];
+    for(var i=0;i<p.w.length;i++){
+      var k=ckey(p.r+d[0]*i,p.col+d[1]*i);
+      if(!cells.has(k)) cells.set(k,{ch:p.w[i],A:null,D:null,given:false});
+      cells.get(k)[p.dir]=idx;
+    }
+  });
+  if(cfg.given){
+    nums.forEach(function(_,k){
+      var cell=cells.get(k);
+      if(cell) cell.given=true;
+    });
+  }
+  return {level:level,cfg:cfg,words:words,rows:rows,cols:cols,cells:cells,nums:nums};
+}
+function cwWordCells(word){
+  var d=word.dir==='A'?[0,1]:[1,0];
+  var out=[];
+  for(var i=0;i<word.w.length;i++) out.push([word.r+d[0]*i,word.col+d[1]*i]);
+  return out;
+}
+function cwStart(level){
+  var puzzle=cwBuild(level);
+  if(!puzzle) return;
+  if(CW&&CW.timer) clearInterval(CW.timer);
+  CW={level:level,puzzle:puzzle,entries:{},marks:{},revealed:{},active:null,dir:'A',sec:0,
+      done:false,cheated:false,revealLeft:CWS[level].reveal,result:null,timer:null};
+  cwView();
+  CW.timer=setInterval(function(){
+    if(!CW||!CW.puzzle||CW.done) return;
+    CW.sec++;
+    var t=q('cw-timer');
+    if(t) t.textContent='⏱ '+fmt(CW.sec);
+  },1000);
+}
+function cwView(){
+  var view=q('view-crossword');
+  if(!CW||!CW.puzzle){
+    view.innerHTML=pickerHtml('เกมที่สอง · The Puzzle','อักษรไขว้ศัพท์ดนตรี',CWD,cwBests());
+    bindLevels(view,cwStart);
+    return;
+  }
+  view.innerHTML=cwHtml();
+  bindCw(view);
+}
+function cwWordOk(word){
+  var p=CW.puzzle;
+  return cwWordCells(word).every(function(pos,i){
+    var cell=p.cells.get(ckey(pos[0],pos[1]));
+    var val=cell.given?cell.ch:(CW.entries[ckey(pos[0],pos[1])]||'');
+    return val===word.w[i];
+  });
+}
+function cwDoneWords(){
+  return CW.puzzle.words.map(function(w,i){return {w:w,i:i};})
+    .filter(function(x){return cwWordOk(x.w);})
+    .map(function(x){return x.i;});
+}
+function cwActiveIndex(){
+  if(!CW.active) return null;
+  var cell=CW.puzzle.cells.get(ckey(CW.active[0],CW.active[1]));
+  if(!cell) return null;
+  return cell[CW.dir];
+}
+function cwGridHtml(){
+  var p=CW.puzzle;
+  var avail=Math.min(window.innerWidth-72,560);
+  var cs=Math.max(20,Math.min(34,Math.floor(avail/p.cols)));
+  var fs=Math.round(cs*.55),nfs=Math.round(cs*.26);
+  var activeWord=cwActiveIndex();
+  var hl={};
+  if(activeWord!==null&&activeWord!==undefined){
+    cwWordCells(p.words[activeWord]).forEach(function(pos){ hl[ckey(pos[0],pos[1])]=true; });
+  }
+  var html='<div class="cw-grid" id="cw-grid" style="grid-template-columns:repeat('+p.cols+','+cs+'px)">';
+  for(var r=0;r<p.rows;r++){
+    for(var c=0;c<p.cols;c++){
+      var k=ckey(r,c),cell=p.cells.get(k);
+      if(!cell){
+        html+='<div class="cw-empty" style="width:'+cs+'px;height:'+cs+'px"></div>';
+        continue;
+      }
+      var val=cell.given?cell.ch:(CW.entries[k]||'');
+      var cls='cw-cell';
+      if(cell.given) cls+=' is-given';
+      if(hl[k]) cls+=' is-hl';
+      if(CW.revealed[k]) cls+=' is-rev';
+      if(CW.marks[k]==='ok') cls+=' is-ok';
+      if(CW.marks[k]==='bad') cls+=' is-bad';
+      if(CW.active&&CW.active[0]===r&&CW.active[1]===c) cls+=' is-cur';
+      var numHtml=p.nums.has(k)?'<span class="num" style="font-size:'+nfs+'px">'+p.nums.get(k)+'</span>':'';
+      var input=cell.given
+        ? '<input readonly value="'+cell.ch+'" style="font-size:'+fs+'px">'
+        : '<input maxlength="1" data-r="'+r+'" data-c="'+c+'" value="'+val+'" style="font-size:'+fs+'px" autocomplete="off" spellcheck="false">';
+      html+='<div class="'+cls+'" style="width:'+cs+'px;height:'+cs+'px">'+numHtml+input+'</div>';
+    }
+  }
+  return html+'</div>';
+}
+function cwCluesHtml(){
+  var p=CW.puzzle;
+  var activeIdx=cwActiveIndex();
+  var solved=cwDoneWords();
+  function list(dir,title){
+    var items=p.words.map(function(w,i){return {w:w,i:i};})
+      .filter(function(x){return x.w.dir===dir;})
+      .sort(function(a,b){return a.w.num-b.w.num;});
+    return '<div><h3 class="display-title" style="font-size:1rem">'+title+'</h3>'+
+      items.map(function(x){
+        var cls='clue-item';
+        if(activeIdx===x.i) cls+=' is-act';
+        if(solved.indexOf(x.i)>=0) cls+=' is-done';
+        var len=p.cfg.len?' <span class="clue-len">('+x.w.w.length+')</span>':'';
+        return '<div class="'+cls+'" data-clue="'+x.i+'"><b>'+x.w.num+'.</b> '+esc(x.w.m)+len+'</div>';
+      }).join('')+'</div>';
+  }
+  return '<div style="min-width:210px;flex:1;display:flex;flex-direction:column;gap:18px">'+
+    list('A','➡ แนวนอน')+list('D','⬇ แนวตั้ง')+'</div>';
+}
+function cwResultHtml(){
+  if(!CW.result) return '';
+  if(CW.result.type==='tip') return '<p class="note">'+CW.result.text+'</p>';
+  if(CW.result.type==='progress'){
+    var r=CW.result;
+    return '<p class="note">ถูก '+r.right+' / '+r.total+' ช่อง · ถูกครบแล้ว '+r.solved+' / '+
+      CW.puzzle.words.length+' คำ'+(r.filled<r.total?' · ยังว่างอยู่ '+(r.total-r.filled)+' ช่อง':'')+'</p>';
+  }
+  return '<div class="fade-up mt5" style="border-top:1px solid rgba(255,255,255,.06);padding-top:18px">'+
+    '<p style="font-size:1.05rem">🎉 <b class="gold-text">'+
+      (CW.result.clean?'ยอดเยี่ยม! ไขปริศนาครบทุกคำ':'ครบทุกคำแล้ว (มีการใช้เฉลย)')+
+      '</b> · ใช้เวลา '+fmt(CW.sec)+'</p>'+
+    (CW.result.record?'<p class="small gold-text mt1">🏆 สถิติใหม่!</p>':'')+
+    '<div class="row mt4"><button class="btn btn-gold" data-cw="new">เล่นตารางใหม่</button>'+
+      '<button class="btn btn-ghost" data-cw="menu">เปลี่ยนระดับ</button></div></div>';
+}
+function cwHtml(){
+  var revealLabel=CW.revealLeft===Infinity?'ไม่จำกัด':'เหลือ '+CW.revealLeft;
+  return '<section class="ornate-panel fade-up panel-pad">'+
+    '<div class="between">'+levelTag(CW.level)+
+      '<span class="timer" id="cw-timer">⏱ '+fmt(CW.sec)+'</span>'+
+      '<button class="btn btn-ghost btn-sm" data-cw="menu">↩ เปลี่ยนระดับ</button></div>'+
+    '<div class="row mt4">'+
+      '<button class="btn btn-gold btn-sm" data-cw="check">✔ ตรวจคำตอบ</button>'+
+      '<button class="btn btn-ghost btn-sm" data-cw="reveal"'+(CW.revealLeft<=0?' disabled':'')+'>💡 เฉลยคำที่เลือก ('+revealLabel+')</button>'+
+      '<button class="btn btn-ghost btn-sm" data-cw="all">👀 เฉลยทั้งหมด</button>'+
+      '<button class="btn btn-ghost btn-sm" data-cw="clear">🧽 ล้าง</button>'+
+      '<button class="btn btn-ghost btn-sm" data-cw="new">🔄 ตารางใหม่</button></div>'+
+    '<div class="cw-wrap mt5"><div class="mx" style="margin:0 auto">'+cwGridHtml()+'</div>'+
+      cwCluesHtml()+'</div>'+
+    cwResultHtml()+
+    '<p class="small muted mt5">💡 คลิกช่องเดิมซ้ำเพื่อสลับแนวนอน/แนวตั้ง · ใช้ปุ่มลูกศรเลื่อนช่องได้</p>'+
+  '</section>';
+}
+function cwInputAt(r,c){
+  var grid=q('cw-grid');
+  if(!grid) return null;
+  return grid.querySelector('input[data-r="'+r+'"][data-c="'+c+'"]');
+}
+function cwActivate(r,c){
+  var cell=CW.puzzle.cells.get(ckey(r,c));
+  if(!cell) return;
+  if(CW.active&&CW.active[0]===r&&CW.active[1]===c&&cell.A!==null&&cell.D!==null){
+    CW.dir=CW.dir==='A'?'D':'A';
+  } else if(cell[CW.dir]===null){
+    CW.dir=cell.A!==null?'A':'D';
+  }
+  CW.active=[r,c];
+  cwView();
+  var input=cwInputAt(r,c);
+  if(input) input.focus();
+}
+function cwPickClue(index){
+  var word=CW.puzzle.words[index];
+  CW.dir=word.dir;
+  CW.active=[word.r,word.col];
+  cwView();
+  var input=cwInputAt(word.r,word.col);
+  if(!input){
+    var cells=cwWordCells(word);
+    for(var i=0;i<cells.length;i++){
+      input=cwInputAt(cells[i][0],cells[i][1]);
+      if(input) break;
+    }
+  }
+  if(input) input.focus();
+}
+function cwSetEntry(r,c,value){
+  var k=ckey(r,c);
+  CW.entries[k]=value;
+  delete CW.marks[k];
+  delete CW.revealed[k];
+}
+function cwMoveInWord(r,c,step){
+  var dir=CW.dir;
+  var dr=dir==='D'?1:0,dc=dir==='A'?1:0;
+  var rr=r+dr*step,cc=c+dc*step;
+  if(!CW.puzzle.cells.has(ckey(rr,cc))) return;
+  var input=cwInputAt(rr,cc);
+  if(input) input.focus();
+}
+function cwCheck(wasCheated){
+  var p=CW.puzzle,marks={},filled=0,right=0;
+  p.cells.forEach(function(cell,k){
+    var val=cell.given?cell.ch:(CW.entries[k]||'');
+    if(!val) return;
+    filled++;
+    if(val===cell.ch){
+      right++;
+      if(!cell.given) marks[k]='ok';
+    } else {
+      marks[k]='bad';
+    }
+  });
+  CW.marks=marks;
+  var solved=p.words.filter(cwWordOk).length;
+  if(right===p.cells.size){
+    var clean=!wasCheated&&!CW.cheated;
+    var record=clean&&!CW.done&&setBest('cw_'+CW.level,CW.sec,true);
+    CW.done=true;
+    CW.result={type:'win',clean:clean,record:record};
+    if(CW.timer){ clearInterval(CW.timer); CW.timer=null; }
+  } else {
+    CW.result={type:'progress',right:right,total:p.cells.size,filled:filled,solved:solved};
+  }
+  cwView();
+}
+function cwRevealWord(word){
+  CW.cheated=true;
+  cwWordCells(word).forEach(function(pos,i){
+    var k=ckey(pos[0],pos[1]);
+    CW.entries[k]=word.w[i];
+    CW.revealed[k]=true;
+  });
+}
+function cwRevealOne(){
+  if(CW.done) return;
+  if(!CW.active){
+    CW.result={type:'tip',text:'👉 คลิกเลือกช่องหรือคำใบ้ก่อนนะ'};
+    cwView(); return;
+  }
+  if(CW.revealLeft<=0){
+    CW.result={type:'tip',text:'❌ ใช้สิทธิ์เฉลยรายคำหมดแล้ว'};
+    cwView(); return;
+  }
+  var cell=CW.puzzle.cells.get(ckey(CW.active[0],CW.active[1]));
+  var index=cell[CW.dir];
+  if(index===null||index===undefined) return;
+  cwRevealWord(CW.puzzle.words[index]);
+  CW.revealLeft--;
+  cwView();
+}
+function cwRevealAll(){
+  if(CW.done) return;
+  if(!window.confirm('เฉลยทั้งหมดเลยไหม? (จะไม่บันทึกสถิติเวลา)')) return;
+  CW.puzzle.words.forEach(cwRevealWord);
+  var full={};
+  CW.puzzle.cells.forEach(function(cell,k){ full[k]=cell.ch; });
+  var wasCheated=CW.cheated;
+  CW.cheated=wasCheated;
+  cwCheck(true);
+}
+function cwAction(action){
+  if(action==='check') cwCheck(false);
+  else if(action==='reveal') cwRevealOne();
+  else if(action==='all') cwRevealAll();
+  else if(action==='clear'){
+    CW.entries={};CW.marks={};CW.revealed={};CW.result=null;
+    cwView();
+  }
+  else if(action==='new') cwStart(CW.level);
+  else if(action==='menu'){ CW=null; cwView(); }
+}
+function bindCw(view){
+  all(view,'input[data-r]').forEach(function(input){
+    input.addEventListener('click',function(){
+      cwActivate(+input.getAttribute('data-r'),+input.getAttribute('data-c'));
+    });
+    input.addEventListener('input',function(){
+      var r=+input.getAttribute('data-r'),c=+input.getAttribute('data-c');
+      var ch=(input.value||'').toUpperCase().replace(/[^A-Z]/g,'').slice(-1);
+      input.value=ch;
+      cwSetEntry(r,c,ch);
+      if(ch) cwMoveInWord(r,c,1);
+    });
+    input.addEventListener('keydown',function(event){
+      var r=+input.getAttribute('data-r'),c=+input.getAttribute('data-c');
+      if(event.key==='Backspace'&&!input.value){
+        event.preventDefault();
+        cwMoveInWord(r,c,-1);
+        return;
+      }
+      if(event.key==='ArrowRight'||event.key==='ArrowLeft'||event.key==='ArrowUp'||event.key==='ArrowDown'){
+        event.preventDefault();
+        var dr=event.key==='ArrowDown'?1:event.key==='ArrowUp'?-1:0;
+        var dc=event.key==='ArrowRight'?1:event.key==='ArrowLeft'?-1:0;
+        var rr=r,cc=c;
+        for(var i=0;i<MAX_SIZE;i++){
+          rr+=dr;cc+=dc;
+          if(!CW.puzzle.cells.has(ckey(rr,cc))) return;
+          var next=cwInputAt(rr,cc);
+          if(next){ next.focus(); return; }
+        }
+      }
+      if(event.key==='Enter'){ event.preventDefault(); cwCheck(false); }
+    });
+  });
+  all(view,'[data-clue]').forEach(function(node){
+    node.onclick=function(){ cwPickClue(+node.getAttribute('data-clue')); };
+  });
+  all(view,'[data-cw]').forEach(function(btn){
+    btn.onclick=function(){ cwAction(btn.getAttribute('data-cw')); };
+  });
+}
+
+/* ---------------- COMPOSER ---------------- */
+var CPD={
+  easy:['นักประพันธ์ชื่อดัง 10 คน','เปิดตัวอักษรให้บางส่วน','บอกตัวที่ถูก 🟩 / มีในชื่อแต่ผิดตำแหน่ง 🟨','ตอบผิดได้ไม่จำกัด'],
+  med:['สุ่มจากนักประพันธ์ 20 คน','เปิดให้แค่ตัวอักษรแรก','บอกเฉพาะตัวที่ถูกตำแหน่ง 🟩','ตอบได้ 5 ครั้ง · เห็นผลงาน 3 ชิ้น'],
+  hard:['นักประพันธ์ที่ท้าทายขึ้น','ภาพเบลอ + เห็นผลงานแค่ 2 ชิ้น','ไม่บอกว่าตัวไหนถูก','ตอบได้ 3 ครั้ง']
+};
+var CP=null;
+var imgCache={};
+
+function cpBests(){
+  var o={};
+  ['easy','med','hard'].forEach(function(k){
+    var b=getBest('cp_'+k);
+    o[k]=b===null?null:b+' / '+(CP_ROUNDS*CP_BASE);
+  });
+  return o;
+}
+function cpSlots(composer,cfg){
+  var list=[];
+  for(var i=0;i<composer.key.length;i++){
+    var ch=composer.key[i];
+    if(ch==='-') continue;
+    list.push({ch:ch,value:'',state:'open'});
+  }
+  if(cfg.pre==='first'){
+    list[0].state='given';
+  } else if(cfg.pre>0){
+    list[0].state='given';
+    var count=Math.max(1,Math.round(list.length*cfg.pre))-1;
+    var pool=list.map(function(_,idx){return idx;}).slice(1);
+    shuffle(pool).slice(0,count).forEach(function(idx){ list[idx].state='given'; });
+  }
+  list.forEach(function(slot){ if(slot.state==='given') slot.value=slot.ch; });
+  return list;
+}
+function cpStart(level){
+  var cfg=CPS[level];
+  CP={level:level,cfg:cfg,order:shuffle(COMPOSERS.filter(cfg.pool)).slice(0,CP_ROUNDS),
+      i:0,score:0,correctCount:0,finished:false,record:false};
+  cpInitRound();
+  cpView();
+}
+function cpInitRound(){
+  var composer=CP.order[CP.i],cfg=CP.cfg;
+  CP.slots=cpSlots(composer,cfg);
+  CP.pts=CP_BASE;
+  CP.tries=cfg.tries;
+  CP.shownWorks=Math.min(cfg.works,composer.works.length);
+  CP.hintsUsed=[];
+  CP.notes=[];
+  CP.done=false;
+  CP.revealKind=null;
+  CP.gained=0;
+  CP.blurred=cfg.blur;
+  CP.thai='';
+  CP.img=imgCache[composer.wiki]||null;
+  CP.imgError=false;
+  cpLoadImage(composer);
+}
+function cpPaintPortrait(){
+  var box=q('cp-portrait');
+  if(!box||!CP) return;
+  var composer=CP.order[CP.i];
+  if(CP.img){
+    box.innerHTML='<img src="'+CP.img+'" alt="'+esc(composer.full)+'"'+
+      (CP.blurred&&!CP.done?' class="is-blur"':'')+'>';
+  } else {
+    box.innerHTML='<div class="center small muted" style="padding:0 12px">🎼<br>'+
+      (CP.imgError?'ไม่พบภาพ (ต้องต่ออินเทอร์เน็ต)':'กำลังโหลดภาพ...')+'</div>';
+  }
+}
+function cpLoadImage(composer){
+  if(imgCache[composer.wiki]){
+    cpPaintPortrait();
+    return;
+  }
+  fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(composer.wiki))
+    .then(function(res){return res.json();})
+    .then(function(data){
+      var url=(data.thumbnail&&data.thumbnail.source)||(data.originalimage&&data.originalimage.source)||'';
+      if(!url){ throw new Error('no image'); }
+      imgCache[composer.wiki]=url;
+      if(!CP||CP.order[CP.i]!==composer) return;
+      CP.img=url;
+      cpPaintPortrait();
+    })
+    .catch(function(){
+      if(!CP||CP.order[CP.i]!==composer) return;
+      CP.imgError=true;
+      cpPaintPortrait();
+    });
+}
+function cpView(){
+  var view=q('view-composer');
+  if(!CP||!CP.level){
+    view.innerHTML=pickerHtml('เกมที่สาม · The Composer','นักประพันธ์คนนี้คือใคร?',CPD,cpBests());
+    bindLevels(view,cpStart);
+    return;
+  }
+  if(CP.finished){
+    view.innerHTML=cpResultHtml();
+    bindCpResult(view);
+    return;
+  }
+  view.innerHTML=cpHtml();
+  bindCp(view);
+  cpPaintPortrait();
+}
+function cpSlotsHtml(){
+  var html='<div class="slots">';
+  CP.slots.forEach(function(slot,idx){
+    var cls='slot is-'+slot.state;
+    if(slot.state==='given'||slot.state==='hit'||slot.state==='ans'){
+      html+='<span class="'+cls+'">'+(slot.state==='ans'?slot.value:slot.ch)+'</span>';
+    } else {
+      html+='<input class="'+cls+'" data-slot="'+idx+'" maxlength="1" value="'+slot.value+
+        '" autocomplete="off" spellcheck="false">';
+    }
+  });
+  return html+'</div>';
+}
+function cpHints(){
+  var list=[
+    {id:'era',label:'🏛️ ยุค & สัญชาติ',cost:2},
+    {id:'first',label:'👤 ชื่อต้น',cost:2},
+    {id:'letter',label:'🔤 เปิด 1 ตัวอักษร',cost:1,repeat:true}
+  ];
+  if(CP.shownWorks<CP.order[CP.i].works.length) list.push({id:'works',label:'🎼 ดูผลงานเพิ่ม',cost:1});
+  if(CP.blurred) list.push({id:'clear',label:'🖼️ ทำให้ภาพชัด',cost:2});
+  return list;
+}
+function cpNotesHtml(){
+  return CP.notes.map(function(note){ return '<div class="note">'+note+'</div>'; }).join('');
+}
+function cpHtml(){
+  var composer=CP.order[CP.i];
+  var hintBtns=cpHints().map(function(hint){
+    var used=CP.hintsUsed.indexOf(hint.id)>=0;
+    return '<button class="btn btn-ghost btn-sm" data-hint="'+hint.id+'"'+
+      (CP.done||(!hint.repeat&&used)?' disabled':'')+'>'+hint.label+' (−'+hint.cost+')</button>';
+  }).join('');
+  var feedbackNote=CP.cfg.fb==='full'
+    ? '🟩 ถูกตำแหน่ง · 🟨 มีในชื่อแต่ผิดตำแหน่ง · 🟥 ไม่มีในชื่อ'
+    : CP.cfg.fb==='green' ? '🟩 ถูกตำแหน่ง · 🟥 ผิดตำแหน่ง' : '';
+
+  return '<section class="ornate-panel fade-up panel-pad">'+
+    '<div class="between">'+levelTag(CP.level)+
+      '<span class="small muted">คนที่ '+(CP.i+1)+' / '+CP_ROUNDS+' · คะแนนรวม '+CP.score+'</span>'+
+      '<button class="btn btn-ghost btn-sm" data-cp="menu">↩ เปลี่ยนระดับ</button></div>'+
+    '<div class="bar mt3"><span style="width:'+((CP.i/CP_ROUNDS)*100)+'%"></span></div>'+
+    '<div class="mt5" style="display:flex;flex-wrap:wrap;gap:24px">'+
+      '<div style="margin:0 auto">'+
+        '<div class="portrait" id="cp-portrait"></div>'+
+        '<p class="small muted center mt2" style="letter-spacing:.14em;font-size:10px">'+
+          (CP.blurred&&!CP.done?'ภาพเบลอ':'Portrait')+'</p>'+
+      '</div>'+
+      '<div style="min-width:240px;flex:1">'+
+        '<h3 class="display-title" style="font-size:1.05rem">🎵 ผลงานเด่นของเขา</h3>'+
+        '<ul style="margin-top:4px;font-size:.9rem;color:#c9bba6;list-style:none">'+
+          composer.works.slice(0,CP.shownWorks).map(function(w){return '<li>· '+esc(w)+'</li>';}).join('')+
+        '</ul>'+
+        '<p class="small muted mt4">✍️ พิมพ์นามสกุลภาษาอังกฤษลงในช่อง แล้วกด Enter</p>'+
+        '<div class="mt2">'+cpSlotsHtml()+'</div>'+
+        (feedbackNote?'<p class="small muted mt2">'+feedbackNote+'</p>':'')+
+        '<div class="row mt4">'+
+          '<button class="btn btn-gold" data-cp="submit"'+(CP.done?' disabled':'')+'>✔ ตอบ</button>'+
+          '<span class="small muted">คะแนนที่จะได้: <b class="gold-text">'+CP.pts+'</b>'+
+            (CP.tries===Infinity?'':' · โอกาสตอบ: <b>'+CP.tries+'</b>')+'</span>'+
+        '</div>'+
+        '<div class="row mt3" style="flex-wrap:nowrap">'+
+          '<input class="field" id="cp-thai" placeholder="หรือพิมพ์ชื่อภาษาไทย เช่น โมซาร์ท"'+
+            (CP.done?' disabled':'')+' autocomplete="off">'+
+          '<button class="btn btn-ghost" data-cp="thai"'+(CP.done?' disabled':'')+'>ตอบ</button>'+
+        '</div>'+
+        '<p class="small muted mt5">💡 ต้องการคำใบ้ไหม? (ไม่บังคับ แต่ใช้แล้วคะแนนจะลดลง)</p>'+
+        '<div class="row mt2">'+hintBtns+'</div>'+
+        cpNotesHtml()+
+        (CP.done?cpRoundDoneHtml():'')+
+        '<div class="mt4"><button class="btn btn-ghost btn-sm" data-cp="surrender"'+
+          (CP.done?' disabled':'')+'>🏳️ ยอมแพ้ / ดูเฉลย</button></div>'+
+      '</div>'+
+    '</div></section>';
+}
+function cpRoundDoneHtml(){
+  var composer=CP.order[CP.i];
+  return '<div class="fade-up mt5" style="border-top:1px solid rgba(255,255,255,.06);padding-top:16px">'+
+    '<p>'+(CP.revealKind==='ok'
+      ? '✅ ถูกต้อง! ได้ <b class="gold-text">+'+CP.gained+'</b> คะแนน'
+      : '🏳️ เฉลย:')+'</p>'+
+    '<p class="display-title gold-text mt1" style="font-size:1.4rem">'+esc(composer.full)+'</p>'+
+    '<p class="small muted">'+esc(composer.th)+' · '+esc(composer.nat)+' · '+esc(composer.yrs)+' · ยุค'+esc(composer.era)+'</p>'+
+    '<div class="mt4"><button class="btn btn-gold" data-cp="next">'+
+      (CP.i+1<CP.order.length?'คนต่อไป →':'ดูผลคะแนน 🏆')+'</button></div></div>';
+}
+function cpResultHtml(){
+  var message=CP.correctCount>=8?'🎩 ผู้เชี่ยวชาญดนตรีคลาสสิก!'
+    :CP.correctCount>=5?'🎻 เก่งมาก!':'🎶 ฟังเพลงคลาสสิกเพิ่มอีกนิดนะ';
+  return '<section class="ornate-panel fade-up panel-pad center">'+levelTag(CP.level)+
+    '<p class="eyebrow mt7">คะแนนรวม</p>'+
+    '<p class="display-title mt2" style="font-size:3.2rem"><span class="gold-text">'+CP.score+
+      '</span><span class="muted" style="font-size:1.4rem"> / '+(CP_ROUNDS*CP_BASE)+'</span></p>'+rule()+
+    '<p style="font-size:1.05rem">ตอบถูก '+CP.correctCount+' จาก '+CP_ROUNDS+' คน '+message+'</p>'+
+    (CP.record?'<p class="small gold-text mt2">🏆 สถิติใหม่!</p>':'')+
+    '<div class="row mt7" style="justify-content:center">'+
+      '<button class="btn btn-gold" data-again="1">🔄 เล่นอีกครั้ง</button>'+
+      '<button class="btn btn-ghost" data-cp="menu">เปลี่ยนระดับ</button></div></section>';
+}
+function bindCpResult(view){
+  all(view,'[data-again]').forEach(function(btn){ btn.onclick=function(){ cpStart(CP.level); }; });
+  all(view,'[data-cp]').forEach(function(btn){
+    btn.onclick=function(){ if(btn.getAttribute('data-cp')==='menu'){ CP=null; cpView(); } };
+  });
+}
+function cpFocusNext(index){
+  var view=q('view-composer');
+  var inputs=all(view,'input[data-slot]');
+  for(var i=0;i<inputs.length;i++){
+    if(+inputs[i].getAttribute('data-slot')>index){ inputs[i].focus(); return; }
+  }
+}
+function bindCp(view){
+  all(view,'input[data-slot]').forEach(function(input){
+    input.addEventListener('input',function(){
+      var idx=+input.getAttribute('data-slot');
+      var ch=(input.value||'').toUpperCase().replace(/[^A-Z]/g,'').slice(-1);
+      input.value=ch;
+      CP.slots[idx].value=ch;
+      if(ch) cpFocusNext(idx);
+    });
+    input.addEventListener('keydown',function(event){
+      if(event.key==='Enter'){ event.preventDefault(); cpSubmit(); }
+    });
+  });
+  var thai=view.querySelector('#cp-thai');
+  if(thai){
+    thai.value=CP.thai||'';
+    thai.addEventListener('input',function(){ CP.thai=thai.value; });
+    thai.addEventListener('keydown',function(event){
+      if(event.key==='Enter'){ event.preventDefault(); cpSubmitThai(); }
+    });
+  }
+  all(view,'[data-hint]').forEach(function(btn){
+    btn.onclick=function(){ cpApplyHint(btn.getAttribute('data-hint')); };
+  });
+  all(view,'[data-cp]').forEach(function(btn){
+    var action=btn.getAttribute('data-cp');
+    btn.onclick=function(){
+      if(action==='submit') cpSubmit();
+      else if(action==='thai') cpSubmitThai();
+      else if(action==='surrender') cpFinishRound(false);
+      else if(action==='next') cpNext();
+      else if(action==='menu'){ CP=null; cpView(); }
+    };
+  });
+}
+function cpAddNote(html){ CP.notes.push(html); }
+function cpApplyHint(id){
+  if(!CP||CP.done) return;
+  var composer=CP.order[CP.i];
+  if(id==='letter'){
+    var editable=CP.slots.map(function(slot,index){return {slot:slot,index:index};})
+      .filter(function(x){return x.slot.state==='open';});
+    if(editable.length<=1){ cpView(); return; }
+    var wrong=editable.filter(function(x){return x.slot.value!==x.slot.ch;});
+    var pool=wrong.length>1?wrong:editable;
+    var pick=pool[Math.floor(Math.random()*pool.length)];
+    CP.slots[pick.index].value=pick.slot.ch;
+    CP.slots[pick.index].state='given';
+  }
+  if(CP.hintsUsed.indexOf(id)>=0&&id!=='letter'){ cpView(); return; }
+  if(id==='era') cpAddNote('🏛️ ยุค: <b>'+esc(composer.era)+'</b> · สัญชาติ: <b>'+esc(composer.nat)+'</b> · ช่วงชีวิต: <b>'+esc(composer.yrs)+'</b>');
+  if(id==='first') cpAddNote('👤 ชื่อต้น: <b class="gold-text">'+esc(composer.full.split(' ').slice(0,-1).join(' '))+'</b> ...');
+  if(id==='works'){ CP.shownWorks=composer.works.length; cpAddNote('🎼 เปิดผลงานทั้งหมดแล้ว'); }
+  if(id==='clear'){ CP.blurred=false; cpAddNote('🖼️ ภาพชัดแล้ว!'); }
+  CP.hintsUsed.push(id);
+  CP.pts=Math.max(1,CP.pts-(id==='letter'?1:(id==='works'?1:2)));
+  cpView();
+}
+function cpFinishRound(ok){
+  if(!CP||CP.done) return;
+  CP.done=true;
+  CP.gained=ok?CP.pts:0;
+  CP.revealKind=ok?'ok':'reveal';
+  CP.score+=ok?CP.pts:0;
+  if(ok) CP.correctCount++;
+  CP.slots.forEach(function(slot){
+    if(slot.state==='open'||slot.state==='near'||slot.state==='miss'){
+      slot.value=slot.ch;
+      slot.state=ok?'hit':'ans';
+    } else {
+      slot.value=slot.ch;
+      if(ok) slot.state='hit';
+    }
+  });
+  CP.shownWorks=CP.order[CP.i].works.length;
+  CP.blurred=false;
+  cpView();
+}
+function cpWrongGuess(){
+  CP.pts=Math.max(1,CP.pts-1);
+  var remaining=CP.tries===Infinity?Infinity:CP.tries-1;
+  CP.tries=remaining;
+  if(remaining!==Infinity&&remaining<=0){ cpFinishRound(false); return; }
+  cpAddNote(remaining!==Infinity
+    ? '❌ ยังไม่ถูก · เหลือโอกาสอีก <b>'+remaining+'</b> ครั้ง (−1 คะแนน)'
+    : '❌ ยังไม่ถูก (−1 คะแนน)');
+}
+function cpSubmit(){
+  if(!CP||CP.done) return;
+  var empty=false,guess='',answer='';
+  CP.slots.forEach(function(slot){
+    if(!slot.value) empty=true;
+    guess+=slot.value;
+    answer+=slot.ch;
+  });
+  if(empty){ cpAddNote('✏️ กรอกตัวอักษรให้ครบทุกช่องก่อนนะ'); cpView(); return; }
+  if(guess===answer){ cpFinishRound(true); return; }
+  if(CP.cfg.fb!=='none'){
+    var remain={};
+    CP.slots.forEach(function(slot){
+      if(slot.state==='open'&&slot.value!==slot.ch){ remain[slot.ch]=(remain[slot.ch]||0)+1; }
+    });
+    CP.slots.forEach(function(slot){
+      if(slot.state!=='open') return;
+      if(slot.value===slot.ch){ slot.state='hit'; return; }
+      if(CP.cfg.fb==='full'&&remain[slot.value]>0){
+        remain[slot.value]--;
+        slot.state='near';
+        return;
+      }
+      slot.state='miss';
+    });
+  }
+  cpWrongGuess();
+  cpView();
+}
+function cpSubmitThai(){
+  if(!CP||CP.done) return;
+  var composer=CP.order[CP.i];
+  var guess=norm(CP.thai||'');
+  if(!guess) return;
+  var correct=[composer.th,composer.full].concat(composer.ans).some(function(answer){
+    var value=norm(answer);
+    return value===guess||(value.length>=3&&guess.indexOf(value)>=0);
+  });
+  CP.thai='';
+  if(correct){ cpFinishRound(true); return; }
+  cpWrongGuess();
+  cpView();
+}
+function cpNext(){
+  var nextIndex=CP.i+1;
+  if(nextIndex>=CP.order.length){
+    CP.record=setBest('cp_'+CP.level,CP.score)&&CP.score>0;
+    CP.finished=true;
+    cpView();
+    return;
+  }
+  CP.i=nextIndex;
+  cpInitRound();
+  cpView();
+}
+
+/* ---------------- boot ---------------- */
+q('tabs').addEventListener('click',function(event){
+  var btn=event.target.closest('[data-tab]');
+  if(btn) showTab(btn.getAttribute('data-tab'));
+});
+renderTabs();
+showTab('quiz');
+</script>
+</body>
+</html>
